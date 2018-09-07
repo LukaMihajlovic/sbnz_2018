@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "anamnesis",
+            "otherEntityName": "anamnesis",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "allergiesDrugs"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "DrugType",
+            "fieldValues": "ANTIBIOTIC,ANALGETIC,OTHER"
+        }
+    ],
+    "changelogDate": "20180907035822",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "drug",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

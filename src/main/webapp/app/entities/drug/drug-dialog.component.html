@@ -1,0 +1,44 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDrugLabel">Create or edit a Drug</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!drug.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="drug.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="drug.name" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="drug.type" id="field_type" >
+                <option value="ANTIBIOTIC">ANTIBIOTIC</option>
+                <option value="ANALGETIC">ANALGETIC</option>
+                <option value="OTHER">OTHER</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="field_anamnesis">Anamnesis</label>
+            <select class="form-control" id="field_anamnesis" multiple name="anamnesis" [(ngModel)]="drug.anamneses">
+                <option [ngValue]="getSelected(drug.anamneses, anamnesisOption)" *ngFor="let anamnesisOption of anamneses; trackBy: trackAnamnesisById">{{anamnesisOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

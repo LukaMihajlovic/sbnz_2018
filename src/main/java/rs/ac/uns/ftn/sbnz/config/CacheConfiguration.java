@@ -42,6 +42,19 @@ public class CacheConfiguration {
             cm.createCache(rs.ac.uns.ftn.sbnz.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(rs.ac.uns.ftn.sbnz.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(rs.ac.uns.ftn.sbnz.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Diagnosis.class.getName(), jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Doctor.class.getName(), jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Doctor.class.getName() + ".diagnoses", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Patient.class.getName(), jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Anamnesis.class.getName(), jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Anamnesis.class.getName() + ".diagnoses", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Anamnesis.class.getName() + ".allergiesIngredients", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Anamnesis.class.getName() + ".allergiesDrugs", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Ingredient.class.getName(), jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Ingredient.class.getName() + ".anamneses", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Drug.class.getName(), jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Drug.class.getName() + ".anamneses", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Drug.class.getName() + ".ingredients", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "doctor",
+            "otherEntityName": "doctor",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "recovery",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180907030325",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "diagnosis",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

@@ -1,0 +1,20 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "firstName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180907032226",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "patient",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}
