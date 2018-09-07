@@ -27,9 +27,9 @@
         </div>
 
         <div class="form-group">
-            <label for="field_anamnesis">Anamnesis</label>
-            <select class="form-control" id="field_anamnesis" multiple name="anamnesis" [(ngModel)]="drug.anamneses">
-                <option [ngValue]="getSelected(drug.anamneses, anamnesisOption)" *ngFor="let anamnesisOption of anamneses; trackBy: trackAnamnesisById">{{anamnesisOption.id}}</option>
+            <label for="field_ingredient">Ingredient</label>
+            <select class="form-control" id="field_ingredient" multiple name="ingredient" [(ngModel)]="drug.ingredients">
+                <option [ngValue]="getSelected(drug.ingredients, ingredientOption)" *ngFor="let ingredientOption of ingredients; trackBy: trackIngredientById">{{ingredientOption.id}}</option>
             </select>
         </div>
     </div>

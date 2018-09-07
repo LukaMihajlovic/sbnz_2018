@@ -41,11 +41,11 @@ public class Anamnesis implements Serializable {
                inverseJoinColumns = @JoinColumn(name="allergies_ingredients_id", referencedColumnName="id"))
     private Set<Ingredient> allergiesIngredients = new HashSet<>();
 
-    @ManyToMany(mappedBy = "anamneses")
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "anamnesis_allergies_drug",
-        joinColumns = @JoinColumn(name="anamneses_id", referencedColumnName="id"),
-        inverseJoinColumns = @JoinColumn(name="allergies_drugs_id", referencedColumnName="id"))
+    @JoinTable(name = "anamnesis_allergies_drugs",
+               joinColumns = @JoinColumn(name="anamneses_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="allergies_drugs_id", referencedColumnName="id"))
     private Set<Drug> allergiesDrugs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -68,13 +68,13 @@ public class Anamnesis implements Serializable {
 
     public Anamnesis addDiagnosis(Diagnosis diagnosis) {
         this.diagnoses.add(diagnosis);
-        //diagnosis.setAnamnesis(this);
+        diagnosis.setAnamnesis(this);
         return this;
     }
 
     public Anamnesis removeDiagnosis(Diagnosis diagnosis) {
         this.diagnoses.remove(diagnosis);
-        //diagnosis.setAnamnesis(null);
+        diagnosis.setAnamnesis(null);
         return this;
     }
 

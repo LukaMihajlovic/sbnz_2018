@@ -9,6 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Drug } from './drug.model';
 import { DrugPopupService } from './drug-popup.service';
 import { DrugService } from './drug.service';
+import { Ingredient, IngredientService } from '../ingredient';
 import { Anamnesis, AnamnesisService } from '../anamnesis';
 
 @Component({
@@ -20,12 +21,15 @@ export class DrugDialogComponent implements OnInit {
     drug: Drug;
     isSaving: boolean;
 
+    ingredients: Ingredient[];
+
     anamneses: Anamnesis[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private drugService: DrugService,
+        private ingredientService: IngredientService,
         private anamnesisService: AnamnesisService,
         private eventManager: JhiEventManager
     ) {
@@ -33,6 +37,8 @@ export class DrugDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.ingredientService.query()
+            .subscribe((res: HttpResponse<Ingredient[]>) => { this.ingredients = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.anamnesisService.query()
             .subscribe((res: HttpResponse<Anamnesis[]>) => { this.anamneses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -69,6 +75,10 @@ export class DrugDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackIngredientById(index: number, item: Ingredient) {
+        return item.id;
     }
 
     trackAnamnesisById(index: number, item: Anamnesis) {

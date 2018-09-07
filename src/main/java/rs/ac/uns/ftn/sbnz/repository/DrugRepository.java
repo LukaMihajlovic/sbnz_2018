@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface DrugRepository extends JpaRepository<Drug, Long> {
-    @Query("select distinct drug from Drug drug left join fetch drug.anamneses")
+    @Query("select distinct drug from Drug drug left join fetch drug.ingredients")
     List<Drug> findAllWithEagerRelationships();
 
-    @Query("select drug from Drug drug left join fetch drug.anamneses where drug.id =:id")
+    @Query("select drug from Drug drug left join fetch drug.ingredients where drug.id =:id")
     Drug findOneWithEagerRelationships(@Param("id") Long id);
 
 }

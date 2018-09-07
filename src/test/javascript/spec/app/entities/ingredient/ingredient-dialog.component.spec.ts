@@ -10,6 +10,7 @@ import { IngredientDialogComponent } from '../../../../../../main/webapp/app/ent
 import { IngredientService } from '../../../../../../main/webapp/app/entities/ingredient/ingredient.service';
 import { Ingredient } from '../../../../../../main/webapp/app/entities/ingredient/ingredient.model';
 import { AnamnesisService } from '../../../../../../main/webapp/app/entities/anamnesis';
+import { DrugService } from '../../../../../../main/webapp/app/entities/drug';
 
 describe('Component Tests', () => {
 
@@ -26,6 +27,7 @@ describe('Component Tests', () => {
                 declarations: [IngredientDialogComponent],
                 providers: [
                     AnamnesisService,
+                    DrugService,
                     IngredientService
                 ]
             })

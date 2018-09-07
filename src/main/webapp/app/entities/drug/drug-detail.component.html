@@ -12,10 +12,10 @@
         <dd>
             <span>{{drug.type}}</span>
         </dd>
-        <dt><span>Anamnesis</span></dt>
+        <dt><span>Ingredient</span></dt>
         <dd>
-            <span *ngFor="let anamnesis of drug.anamneses; let last = last">
-                <a [routerLink]="['/anamnesis', anamnesis?.id ]">{{anamnesis.id}}</a>{{last ? '' : ', '}}
+            <span *ngFor="let ingredient of drug.ingredients; let last = last">
+                <a [routerLink]="['/ingredient', ingredient?.id ]">{{ingredient.id}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
     </dl>

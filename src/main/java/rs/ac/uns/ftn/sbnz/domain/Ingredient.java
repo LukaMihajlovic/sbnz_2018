@@ -33,6 +33,11 @@ public class Ingredient implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Anamnesis> anamneses = new HashSet<>();
 
+    @ManyToMany(mappedBy = "ingredients")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Drug> drugs = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -78,6 +83,31 @@ public class Ingredient implements Serializable {
 
     public void setAnamneses(Set<Anamnesis> anamneses) {
         this.anamneses = anamneses;
+    }
+
+    public Set<Drug> getDrugs() {
+        return drugs;
+    }
+
+    public Ingredient drugs(Set<Drug> drugs) {
+        this.drugs = drugs;
+        return this;
+    }
+
+    public Ingredient addDrug(Drug drug) {
+        this.drugs.add(drug);
+        drug.getIngredients().add(this);
+        return this;
+    }
+
+    public Ingredient removeDrug(Drug drug) {
+        this.drugs.remove(drug);
+        drug.getIngredients().remove(this);
+        return this;
+    }
+
+    public void setDrugs(Set<Drug> drugs) {
+        this.drugs = drugs;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

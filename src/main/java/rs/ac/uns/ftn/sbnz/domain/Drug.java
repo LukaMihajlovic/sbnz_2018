@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.sbnz.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -35,9 +36,14 @@ public class Drug implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "drug_anamnesis",
+    @JoinTable(name = "drug_ingredient",
                joinColumns = @JoinColumn(name="drugs_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="anamneses_id", referencedColumnName="id"))
+               inverseJoinColumns = @JoinColumn(name="ingredients_id", referencedColumnName="id"))
+    private Set<Ingredient> ingredients = new HashSet<>();
+
+    @ManyToMany(mappedBy = "allergiesDrugs")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Anamnesis> anamneses = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -73,6 +79,31 @@ public class Drug implements Serializable {
 
     public void setType(DrugType type) {
         this.type = type;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public Drug ingredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+        return this;
+    }
+
+    public Drug addIngredient(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
+        ingredient.getDrugs().add(this);
+        return this;
+    }
+
+    public Drug removeIngredient(Ingredient ingredient) {
+        this.ingredients.remove(ingredient);
+        ingredient.getDrugs().remove(this);
+        return this;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public Set<Anamnesis> getAnamneses() {

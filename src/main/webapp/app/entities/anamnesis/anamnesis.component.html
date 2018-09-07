@@ -19,6 +19,7 @@
             <th><span>ID</span></th>
             <th><span>Current Diagnosis</span></th>
             <th><span>Allergies Ingredient</span></th>
+            <th><span>Allergies Drugs</span></th>
             <th></th>
             </tr>
             </thead>
@@ -33,6 +34,11 @@
                 <td>
                     <span *ngFor="let allergiesIngredient of anamnesis.allergiesIngredients; let last = last">
                             <a class="form-control-static" [routerLink]="['../ingredient', allergiesIngredient?.id ]">{{allergiesIngredient.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let allergiesDrugs of anamnesis.allergiesDrugs; let last = last">
+                            <a class="form-control-static" [routerLink]="['../drug', allergiesDrugs?.id ]">{{allergiesDrugs.id}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">

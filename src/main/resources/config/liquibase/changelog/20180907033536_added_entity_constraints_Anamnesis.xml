@@ -25,5 +25,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="ingredient"/>
         
+        <addForeignKeyConstraint baseColumnNames="anamneses_id"
+                                 baseTableName="anamnesis_allergies_drugs"
+                                 constraintName="fk_anamnesis_allergies_drugs_anamneses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="anamnesis"/>
+        <addForeignKeyConstraint baseColumnNames="allergies_drugs_id"
+                                 baseTableName="anamnesis_allergies_drugs"
+                                 constraintName="fk_anamnesis_allergies_drugs_allergies_drugs_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="drug"/>
+        
     </changeSet>
 </databaseChangeLog>

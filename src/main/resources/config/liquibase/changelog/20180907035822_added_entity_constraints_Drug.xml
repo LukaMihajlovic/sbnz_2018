@@ -9,15 +9,15 @@
     <changeSet id="20180907035822-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="drugs_id"
-                                 baseTableName="drug_anamnesis"
-                                 constraintName="fk_drug_anamnesis_drugs_id"
+                                 baseTableName="drug_ingredient"
+                                 constraintName="fk_drug_ingredient_drugs_id"
                                  referencedColumnNames="id"
                                  referencedTableName="drug"/>
-        <addForeignKeyConstraint baseColumnNames="anamneses_id"
-                                 baseTableName="drug_anamnesis"
-                                 constraintName="fk_drug_anamnesis_anamneses_id"
+        <addForeignKeyConstraint baseColumnNames="ingredients_id"
+                                 baseTableName="drug_ingredient"
+                                 constraintName="fk_drug_ingredient_ingredients_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="anamnesis"/>
+                                 referencedTableName="ingredient"/>
         
     </changeSet>
 </databaseChangeLog>

@@ -16,6 +16,12 @@
                 <a [routerLink]="['/ingredient', allergiesIngredient?.id ]">{{allergiesIngredient.id}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
+        <dt><span>Allergies Drugs</span></dt>
+        <dd>
+            <span *ngFor="let allergiesDrugs of anamnesis.allergiesDrugs; let last = last">
+                <a [routerLink]="['/drug', allergiesDrugs?.id ]">{{allergiesDrugs.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
     </dl>
 
     <button type="submit"

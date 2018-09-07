@@ -26,6 +26,12 @@
                 <option [ngValue]="getSelected(anamnesis.allergiesIngredients, ingredientOption)" *ngFor="let ingredientOption of ingredients; trackBy: trackIngredientById">{{ingredientOption.id}}</option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="field_allergiesDrugs">Allergies Drugs</label>
+            <select class="form-control" id="field_allergiesDrugs" multiple name="allergiesDrugs" [(ngModel)]="anamnesis.allergiesDrugs">
+                <option [ngValue]="getSelected(anamnesis.allergiesDrugs, drugOption)" *ngFor="let drugOption of drugs; trackBy: trackDrugById">{{drugOption.id}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

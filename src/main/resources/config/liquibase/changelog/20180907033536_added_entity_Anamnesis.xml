@@ -38,6 +38,17 @@
 
         <addPrimaryKey columnNames="anamneses_id, allergies_ingredients_id" tableName="anamnesis_allergies_ingredient"/>
         
+        <createTable tableName="anamnesis_allergies_drugs">
+            <column name="allergies_drugs_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="anamneses_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="anamneses_id, allergies_drugs_id" tableName="anamnesis_allergies_drugs"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

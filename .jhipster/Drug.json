@@ -2,11 +2,18 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "anamnesis",
-            "otherEntityName": "anamnesis",
+            "relationshipName": "ingredient",
+            "otherEntityName": "ingredient",
             "relationshipType": "many-to-many",
             "otherEntityField": "id",
             "ownerSide": true,
+            "otherEntityRelationshipName": "drug"
+        },
+        {
+            "relationshipName": "anamnesis",
+            "otherEntityName": "anamnesis",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
             "otherEntityRelationshipName": "allergiesDrugs"
         }
     ],

@@ -9,6 +9,7 @@ import { SbnzTestModule } from '../../../test.module';
 import { DrugDialogComponent } from '../../../../../../main/webapp/app/entities/drug/drug-dialog.component';
 import { DrugService } from '../../../../../../main/webapp/app/entities/drug/drug.service';
 import { Drug } from '../../../../../../main/webapp/app/entities/drug/drug.model';
+import { IngredientService } from '../../../../../../main/webapp/app/entities/ingredient';
 import { AnamnesisService } from '../../../../../../main/webapp/app/entities/anamnesis';
 
 describe('Component Tests', () => {
@@ -25,6 +26,7 @@ describe('Component Tests', () => {
                 imports: [SbnzTestModule],
                 declarations: [DrugDialogComponent],
                 providers: [
+                    IngredientService,
                     AnamnesisService,
                     DrugService
                 ]

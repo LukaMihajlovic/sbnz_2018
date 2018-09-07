@@ -5,6 +5,7 @@ export class Ingredient implements BaseEntity {
         public id?: number,
         public name?: string,
         public anamneses?: BaseEntity[],
+        public drugs?: BaseEntity[],
     ) {
     }
 }

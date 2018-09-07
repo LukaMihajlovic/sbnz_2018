@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface AnamnesisRepository extends JpaRepository<Anamnesis, Long> {
-    @Query("select distinct anamnesis from Anamnesis anamnesis left join fetch anamnesis.allergiesIngredients")
+    @Query("select distinct anamnesis from Anamnesis anamnesis left join fetch anamnesis.allergiesIngredients left join fetch anamnesis.allergiesDrugs")
     List<Anamnesis> findAllWithEagerRelationships();
 
-    @Query("select anamnesis from Anamnesis anamnesis left join fetch anamnesis.allergiesIngredients where anamnesis.id =:id")
+    @Query("select anamnesis from Anamnesis anamnesis left join fetch anamnesis.allergiesIngredients left join fetch anamnesis.allergiesDrugs where anamnesis.id =:id")
     Anamnesis findOneWithEagerRelationships(@Param("id") Long id);
 
 }
