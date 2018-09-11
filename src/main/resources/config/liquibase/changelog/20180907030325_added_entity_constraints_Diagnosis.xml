@@ -14,5 +14,33 @@
                                  referencedColumnNames="id"
                                  referencedTableName="doctor"/>
 
+        <addForeignKeyConstraint baseColumnNames="anamnesis_id"
+                                 baseTableName="diagnosis"
+                                 constraintName="fk_diagnosis_anamnesis_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="anamnesis"/>
+
+        <addForeignKeyConstraint baseColumnNames="diagnoses_id"
+                                 baseTableName="diagnosis_drugs"
+                                 constraintName="fk_diagnosis_drugs_diagnoses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="diagnosis"/>
+        <addForeignKeyConstraint baseColumnNames="drugs_id"
+                                 baseTableName="diagnosis_drugs"
+                                 constraintName="fk_diagnosis_drugs_drugs_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="drug"/>
+        
+        <addForeignKeyConstraint baseColumnNames="diagnoses_id"
+                                 baseTableName="diagnosis_symptoms"
+                                 constraintName="fk_diagnosis_symptoms_diagnoses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="diagnosis"/>
+        <addForeignKeyConstraint baseColumnNames="symptoms_id"
+                                 baseTableName="diagnosis_symptoms"
+                                 constraintName="fk_diagnosis_symptoms_symptoms_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="symptom"/>
+        
     </changeSet>
 </databaseChangeLog>

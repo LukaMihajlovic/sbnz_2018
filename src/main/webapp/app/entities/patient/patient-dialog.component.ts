@@ -4,11 +4,12 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { Patient } from './patient.model';
 import { PatientPopupService } from './patient-popup.service';
 import { PatientService } from './patient.service';
+import { Anamnesis, AnamnesisService } from '../anamnesis';
 
 @Component({
     selector: 'jhi-patient-dialog',
@@ -19,15 +20,21 @@ export class PatientDialogComponent implements OnInit {
     patient: Patient;
     isSaving: boolean;
 
+    anamneses: Anamnesis[];
+
     constructor(
         public activeModal: NgbActiveModal,
+        private jhiAlertService: JhiAlertService,
         private patientService: PatientService,
+        private anamnesisService: AnamnesisService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.anamnesisService.query()
+            .subscribe((res: HttpResponse<Anamnesis[]>) => { this.anamneses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -58,6 +65,14 @@ export class PatientDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackAnamnesisById(index: number, item: Anamnesis) {
+        return item.id;
     }
 }
 

@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.sbnz.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -27,6 +28,10 @@ public class Patient implements Serializable {
 
     @Column(name = "last_name")
     private String lastName;
+
+    @OneToOne
+    @JsonIgnore
+    private Anamnesis anamnesis;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -61,6 +66,19 @@ public class Patient implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Anamnesis getAnamnesis() {
+        return anamnesis;
+    }
+
+    public Patient anamnesis(Anamnesis anamnesis) {
+        this.anamnesis = anamnesis;
+        return this;
+    }
+
+    public void setAnamnesis(Anamnesis anamnesis) {
+        this.anamnesis = anamnesis;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

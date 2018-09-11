@@ -15,6 +15,13 @@
             "relationshipType": "many-to-many",
             "ownerSide": false,
             "otherEntityRelationshipName": "allergiesDrugs"
+        },
+        {
+            "relationshipName": "diagnosis",
+            "otherEntityName": "diagnosis",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "drugs"
         }
     ],
     "fields": [

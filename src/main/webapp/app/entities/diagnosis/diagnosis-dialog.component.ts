@@ -10,6 +10,9 @@ import { Diagnosis } from './diagnosis.model';
 import { DiagnosisPopupService } from './diagnosis-popup.service';
 import { DiagnosisService } from './diagnosis.service';
 import { Doctor, DoctorService } from '../doctor';
+import { Anamnesis, AnamnesisService } from '../anamnesis';
+import { Drug, DrugService } from '../drug';
+import { Symptom, SymptomService } from '../symptom';
 
 @Component({
     selector: 'jhi-diagnosis-dialog',
@@ -21,6 +24,12 @@ export class DiagnosisDialogComponent implements OnInit {
     isSaving: boolean;
 
     doctors: Doctor[];
+
+    anamneses: Anamnesis[];
+
+    drugs: Drug[];
+
+    symptoms: Symptom[];
     dateDp: any;
 
     constructor(
@@ -28,6 +37,9 @@ export class DiagnosisDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private diagnosisService: DiagnosisService,
         private doctorService: DoctorService,
+        private anamnesisService: AnamnesisService,
+        private drugService: DrugService,
+        private symptomService: SymptomService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -36,6 +48,12 @@ export class DiagnosisDialogComponent implements OnInit {
         this.isSaving = false;
         this.doctorService.query()
             .subscribe((res: HttpResponse<Doctor[]>) => { this.doctors = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.anamnesisService.query()
+            .subscribe((res: HttpResponse<Anamnesis[]>) => { this.anamneses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.drugService.query()
+            .subscribe((res: HttpResponse<Drug[]>) => { this.drugs = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.symptomService.query()
+            .subscribe((res: HttpResponse<Symptom[]>) => { this.symptoms = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -74,6 +92,29 @@ export class DiagnosisDialogComponent implements OnInit {
 
     trackDoctorById(index: number, item: Doctor) {
         return item.id;
+    }
+
+    trackAnamnesisById(index: number, item: Anamnesis) {
+        return item.id;
+    }
+
+    trackDrugById(index: number, item: Drug) {
+        return item.id;
+    }
+
+    trackSymptomById(index: number, item: Symptom) {
+        return item.id;
+    }
+
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
     }
 }
 

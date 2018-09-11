@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Service Implementation for managing Patient.
@@ -44,6 +46,20 @@ public class PatientService {
     public List<Patient> findAll() {
         log.debug("Request to get all Patients");
         return patientRepository.findAll();
+    }
+
+
+    /**
+     *  get all the patients where Anamnesis is null.
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true) 
+    public List<Patient> findAllWhereAnamnesisIsNull() {
+        log.debug("Request to get all patients where Anamnesis is null");
+        return StreamSupport
+            .stream(patientRepository.findAll().spliterator(), false)
+            .filter(patient -> patient.getAnamnesis() == null)
+            .collect(Collectors.toList());
     }
 
     /**

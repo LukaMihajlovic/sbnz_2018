@@ -6,34 +6,26 @@ import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { Drug } from './drug.model';
-import { DrugPopupService } from './drug-popup.service';
-import { DrugService } from './drug.service';
-import { Ingredient, IngredientService } from '../ingredient';
-import { Anamnesis, AnamnesisService } from '../anamnesis';
+import { Symptom } from './symptom.model';
+import { SymptomPopupService } from './symptom-popup.service';
+import { SymptomService } from './symptom.service';
 import { Diagnosis, DiagnosisService } from '../diagnosis';
 
 @Component({
-    selector: 'jhi-drug-dialog',
-    templateUrl: './drug-dialog.component.html'
+    selector: 'jhi-symptom-dialog',
+    templateUrl: './symptom-dialog.component.html'
 })
-export class DrugDialogComponent implements OnInit {
+export class SymptomDialogComponent implements OnInit {
 
-    drug: Drug;
+    symptom: Symptom;
     isSaving: boolean;
-
-    ingredients: Ingredient[];
-
-    anamneses: Anamnesis[];
 
     diagnoses: Diagnosis[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
-        private drugService: DrugService,
-        private ingredientService: IngredientService,
-        private anamnesisService: AnamnesisService,
+        private symptomService: SymptomService,
         private diagnosisService: DiagnosisService,
         private eventManager: JhiEventManager
     ) {
@@ -41,10 +33,6 @@ export class DrugDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.ingredientService.query()
-            .subscribe((res: HttpResponse<Ingredient[]>) => { this.ingredients = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.anamnesisService.query()
-            .subscribe((res: HttpResponse<Anamnesis[]>) => { this.anamneses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.diagnosisService.query()
             .subscribe((res: HttpResponse<Diagnosis[]>) => { this.diagnoses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -55,22 +43,22 @@ export class DrugDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.drug.id !== undefined) {
+        if (this.symptom.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.drugService.update(this.drug));
+                this.symptomService.update(this.symptom));
         } else {
             this.subscribeToSaveResponse(
-                this.drugService.create(this.drug));
+                this.symptomService.create(this.symptom));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<Drug>>) {
-        result.subscribe((res: HttpResponse<Drug>) =>
+    private subscribeToSaveResponse(result: Observable<HttpResponse<Symptom>>) {
+        result.subscribe((res: HttpResponse<Symptom>) =>
             this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: Drug) {
-        this.eventManager.broadcast({ name: 'drugListModification', content: 'OK'});
+    private onSaveSuccess(result: Symptom) {
+        this.eventManager.broadcast({ name: 'symptomListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -81,14 +69,6 @@ export class DrugDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
-    }
-
-    trackIngredientById(index: number, item: Ingredient) {
-        return item.id;
-    }
-
-    trackAnamnesisById(index: number, item: Anamnesis) {
-        return item.id;
     }
 
     trackDiagnosisById(index: number, item: Diagnosis) {
@@ -108,26 +88,26 @@ export class DrugDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'jhi-drug-popup',
+    selector: 'jhi-symptom-popup',
     template: ''
 })
-export class DrugPopupComponent implements OnInit, OnDestroy {
+export class SymptomPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
     constructor(
         private route: ActivatedRoute,
-        private drugPopupService: DrugPopupService
+        private symptomPopupService: SymptomPopupService
     ) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.drugPopupService
-                    .open(DrugDialogComponent as Component, params['id']);
+                this.symptomPopupService
+                    .open(SymptomDialogComponent as Component, params['id']);
             } else {
-                this.drugPopupService
-                    .open(DrugDialogComponent as Component);
+                this.symptomPopupService
+                    .open(SymptomDialogComponent as Component);
             }
         });
     }

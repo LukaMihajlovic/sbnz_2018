@@ -6,41 +6,37 @@ import { Observable } from 'rxjs/Observable';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { SbnzTestModule } from '../../../test.module';
-import { DrugDialogComponent } from '../../../../../../main/webapp/app/entities/drug/drug-dialog.component';
-import { DrugService } from '../../../../../../main/webapp/app/entities/drug/drug.service';
-import { Drug } from '../../../../../../main/webapp/app/entities/drug/drug.model';
-import { IngredientService } from '../../../../../../main/webapp/app/entities/ingredient';
-import { AnamnesisService } from '../../../../../../main/webapp/app/entities/anamnesis';
+import { SymptomDialogComponent } from '../../../../../../main/webapp/app/entities/symptom/symptom-dialog.component';
+import { SymptomService } from '../../../../../../main/webapp/app/entities/symptom/symptom.service';
+import { Symptom } from '../../../../../../main/webapp/app/entities/symptom/symptom.model';
 import { DiagnosisService } from '../../../../../../main/webapp/app/entities/diagnosis';
 
 describe('Component Tests', () => {
 
-    describe('Drug Management Dialog Component', () => {
-        let comp: DrugDialogComponent;
-        let fixture: ComponentFixture<DrugDialogComponent>;
-        let service: DrugService;
+    describe('Symptom Management Dialog Component', () => {
+        let comp: SymptomDialogComponent;
+        let fixture: ComponentFixture<SymptomDialogComponent>;
+        let service: SymptomService;
         let mockEventManager: any;
         let mockActiveModal: any;
 
         beforeEach(async(() => {
             TestBed.configureTestingModule({
                 imports: [SbnzTestModule],
-                declarations: [DrugDialogComponent],
+                declarations: [SymptomDialogComponent],
                 providers: [
-                    IngredientService,
-                    AnamnesisService,
                     DiagnosisService,
-                    DrugService
+                    SymptomService
                 ]
             })
-            .overrideTemplate(DrugDialogComponent, '')
+            .overrideTemplate(SymptomDialogComponent, '')
             .compileComponents();
         }));
 
         beforeEach(() => {
-            fixture = TestBed.createComponent(DrugDialogComponent);
+            fixture = TestBed.createComponent(SymptomDialogComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(DrugService);
+            service = fixture.debugElement.injector.get(SymptomService);
             mockEventManager = fixture.debugElement.injector.get(JhiEventManager);
             mockActiveModal = fixture.debugElement.injector.get(NgbActiveModal);
         });
@@ -50,9 +46,9 @@ describe('Component Tests', () => {
                 inject([],
                     fakeAsync(() => {
                         // GIVEN
-                        const entity = new Drug(123);
+                        const entity = new Symptom(123);
                         spyOn(service, 'update').and.returnValue(Observable.of(new HttpResponse({body: entity})));
-                        comp.drug = entity;
+                        comp.symptom = entity;
                         // WHEN
                         comp.save();
                         tick(); // simulate async
@@ -60,7 +56,7 @@ describe('Component Tests', () => {
                         // THEN
                         expect(service.update).toHaveBeenCalledWith(entity);
                         expect(comp.isSaving).toEqual(false);
-                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'drugListModification', content: 'OK'});
+                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'symptomListModification', content: 'OK'});
                         expect(mockActiveModal.dismissSpy).toHaveBeenCalled();
                     })
                 )
@@ -70,9 +66,9 @@ describe('Component Tests', () => {
                 inject([],
                     fakeAsync(() => {
                         // GIVEN
-                        const entity = new Drug();
+                        const entity = new Symptom();
                         spyOn(service, 'create').and.returnValue(Observable.of(new HttpResponse({body: entity})));
-                        comp.drug = entity;
+                        comp.symptom = entity;
                         // WHEN
                         comp.save();
                         tick(); // simulate async
@@ -80,7 +76,7 @@ describe('Component Tests', () => {
                         // THEN
                         expect(service.create).toHaveBeenCalledWith(entity);
                         expect(comp.isSaving).toEqual(false);
-                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'drugListModification', content: 'OK'});
+                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'symptomListModification', content: 'OK'});
                         expect(mockActiveModal.dismissSpy).toHaveBeenCalled();
                     })
                 )

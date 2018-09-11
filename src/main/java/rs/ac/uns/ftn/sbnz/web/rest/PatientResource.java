@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing Patient.
@@ -79,11 +80,16 @@ public class PatientResource {
     /**
      * GET  /patients : get all the patients.
      *
+     * @param filter the filter of the request
      * @return the ResponseEntity with status 200 (OK) and the list of patients in body
      */
     @GetMapping("/patients")
     @Timed
-    public List<Patient> getAllPatients() {
+    public List<Patient> getAllPatients(@RequestParam(required = false) String filter) {
+        if ("anamnesis-is-null".equals(filter)) {
+            log.debug("REST request to get all Patients where anamnesis is null");
+            return patientService.findAllWhereAnamnesisIsNull();
+        }
         log.debug("REST request to get all Patients");
         return patientService.findAll();
         }

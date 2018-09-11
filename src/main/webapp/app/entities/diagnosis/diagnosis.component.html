@@ -20,6 +20,9 @@
             <th><span>Date</span></th>
             <th><span>Recovery</span></th>
             <th><span>Doctor</span></th>
+            <th><span>Anamnesis</span></th>
+            <th><span>Drugs</span></th>
+            <th><span>Symptoms</span></th>
             <th></th>
             </tr>
             </thead>
@@ -32,6 +35,21 @@
                     <div *ngIf="diagnosis.doctor">
                         <a [routerLink]="['../doctor', diagnosis.doctor?.id ]" >{{diagnosis.doctor?.id}}</a>
                     </div>
+                </td>
+                <td>
+                    <div *ngIf="diagnosis.anamnesis">
+                        <a [routerLink]="['../anamnesis', diagnosis.anamnesis?.id ]" >{{diagnosis.anamnesis?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <span *ngFor="let drugs of diagnosis.drugs; let last = last">
+                            <a class="form-control-static" [routerLink]="['../drug', drugs?.id ]">{{drugs.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let symptoms of diagnosis.symptoms; let last = last">
+                            <a class="form-control-static" [routerLink]="['../symptom', symptoms?.id ]">{{symptoms.id}}</a>{{last ? '' : ', '}}
+                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

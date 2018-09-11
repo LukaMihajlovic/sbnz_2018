@@ -1,0 +1,64 @@
+<div>
+    <h2>
+        <span>Symptoms</span>
+        <button class="btn btn-primary float-right jh-create-entity create-symptom" [routerLink]="['/', { outlets: { popup: ['symptom-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Symptom
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="symptoms">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Name</span></th>
+            <th><span>Low</span></th>
+            <th><span>High</span></th>
+            <th><span>Spec</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let symptom of symptoms ;trackBy: trackId">
+                <td><a [routerLink]="['../symptom', symptom.id ]">{{symptom.id}}</a></td>
+                <td>{{symptom.name}}</td>
+                <td>{{symptom.low}}</td>
+                <td>{{symptom.high}}</td>
+                <td>{{symptom.spec}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../symptom', symptom.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'symptom/'+ symptom.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'symptom/'+ symptom.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

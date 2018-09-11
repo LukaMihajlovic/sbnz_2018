@@ -43,7 +43,7 @@ public class DiagnosisService {
     @Transactional(readOnly = true)
     public List<Diagnosis> findAll() {
         log.debug("Request to get all Diagnoses");
-        return diagnosisRepository.findAll();
+        return diagnosisRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -55,7 +55,7 @@ public class DiagnosisService {
     @Transactional(readOnly = true)
     public Diagnosis findOne(Long id) {
         log.debug("Request to get Diagnosis : {}", id);
-        return diagnosisRepository.findOne(id);
+        return diagnosisRepository.findOneWithEagerRelationships(id);
     }
 
     /**

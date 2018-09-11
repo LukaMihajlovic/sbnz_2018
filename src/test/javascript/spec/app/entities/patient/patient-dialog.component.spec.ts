@@ -9,6 +9,7 @@ import { SbnzTestModule } from '../../../test.module';
 import { PatientDialogComponent } from '../../../../../../main/webapp/app/entities/patient/patient-dialog.component';
 import { PatientService } from '../../../../../../main/webapp/app/entities/patient/patient.service';
 import { Patient } from '../../../../../../main/webapp/app/entities/patient/patient.model';
+import { AnamnesisService } from '../../../../../../main/webapp/app/entities/anamnesis';
 
 describe('Component Tests', () => {
 
@@ -24,6 +25,7 @@ describe('Component Tests', () => {
                 imports: [SbnzTestModule],
                 declarations: [PatientDialogComponent],
                 providers: [
+                    AnamnesisService,
                     PatientService
                 ]
             })

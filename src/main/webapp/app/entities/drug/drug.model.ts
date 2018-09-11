@@ -13,6 +13,7 @@ export class Drug implements BaseEntity {
         public type?: DrugType,
         public ingredients?: BaseEntity[],
         public anamneses?: BaseEntity[],
+        public diagnoses?: BaseEntity[],
     ) {
     }
 }

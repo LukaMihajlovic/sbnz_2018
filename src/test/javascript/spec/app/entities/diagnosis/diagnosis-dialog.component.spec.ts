@@ -10,6 +10,9 @@ import { DiagnosisDialogComponent } from '../../../../../../main/webapp/app/enti
 import { DiagnosisService } from '../../../../../../main/webapp/app/entities/diagnosis/diagnosis.service';
 import { Diagnosis } from '../../../../../../main/webapp/app/entities/diagnosis/diagnosis.model';
 import { DoctorService } from '../../../../../../main/webapp/app/entities/doctor';
+import { AnamnesisService } from '../../../../../../main/webapp/app/entities/anamnesis';
+import { DrugService } from '../../../../../../main/webapp/app/entities/drug';
+import { SymptomService } from '../../../../../../main/webapp/app/entities/symptom';
 
 describe('Component Tests', () => {
 
@@ -26,6 +29,9 @@ describe('Component Tests', () => {
                 declarations: [DiagnosisDialogComponent],
                 providers: [
                     DoctorService,
+                    AnamnesisService,
+                    DrugService,
+                    SymptomService,
                     DiagnosisService
                 ]
             })
