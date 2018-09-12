@@ -42,5 +42,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="symptom"/>
         
+        <addForeignKeyConstraint baseColumnNames="diagnoses_id"
+                                 baseTableName="diagnosis_disease"
+                                 constraintName="fk_diagnosis_disease_diagnoses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="diagnosis"/>
+        <addForeignKeyConstraint baseColumnNames="diseases_id"
+                                 baseTableName="diagnosis_disease"
+                                 constraintName="fk_diagnosis_disease_diseases_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="disease"/>
+        
     </changeSet>
 </databaseChangeLog>

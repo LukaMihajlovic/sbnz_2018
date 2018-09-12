@@ -10,6 +10,7 @@ import { SymptomDialogComponent } from '../../../../../../main/webapp/app/entiti
 import { SymptomService } from '../../../../../../main/webapp/app/entities/symptom/symptom.service';
 import { Symptom } from '../../../../../../main/webapp/app/entities/symptom/symptom.model';
 import { DiagnosisService } from '../../../../../../main/webapp/app/entities/diagnosis';
+import { DiseaseService } from '../../../../../../main/webapp/app/entities/disease';
 
 describe('Component Tests', () => {
 
@@ -26,6 +27,7 @@ describe('Component Tests', () => {
                 declarations: [SymptomDialogComponent],
                 providers: [
                     DiagnosisService,
+                    DiseaseService,
                     SymptomService
                 ]
             })

@@ -63,6 +63,11 @@ public class CacheConfiguration {
             cm.createCache(rs.ac.uns.ftn.sbnz.domain.Diagnosis.class.getName() + ".symptoms", jcacheConfiguration);
             cm.createCache(rs.ac.uns.ftn.sbnz.domain.Drug.class.getName() + ".diagnoses", jcacheConfiguration);
             cm.createCache(rs.ac.uns.ftn.sbnz.domain.Uiawq.class.getName(), jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Disease.class.getName(), jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Disease.class.getName() + ".symptoms", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Symptom.class.getName() + ".diseases", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Diagnosis.class.getName() + ".diseases", jcacheConfiguration);
+            cm.createCache(rs.ac.uns.ftn.sbnz.domain.Disease.class.getName() + ".diagnoses", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

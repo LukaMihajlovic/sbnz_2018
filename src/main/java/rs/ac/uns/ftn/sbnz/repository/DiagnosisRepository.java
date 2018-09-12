@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long> {
-    @Query("select distinct diagnosis from Diagnosis diagnosis left join fetch diagnosis.drugs left join fetch diagnosis.symptoms")
+    @Query("select distinct diagnosis from Diagnosis diagnosis left join fetch diagnosis.drugs left join fetch diagnosis.symptoms left join fetch diagnosis.diseases")
     List<Diagnosis> findAllWithEagerRelationships();
 
-    @Query("select diagnosis from Diagnosis diagnosis left join fetch diagnosis.drugs left join fetch diagnosis.symptoms where diagnosis.id =:id")
+    @Query("select diagnosis from Diagnosis diagnosis left join fetch diagnosis.drugs left join fetch diagnosis.symptoms left join fetch diagnosis.diseases where diagnosis.id =:id")
     Diagnosis findOneWithEagerRelationships(@Param("id") Long id);
 
 }

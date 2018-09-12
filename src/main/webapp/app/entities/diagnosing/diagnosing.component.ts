@@ -4,6 +4,7 @@ import {SymptomService} from "../symptom/symptom.service";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
 import {debounceTime, map} from "rxjs/operators";
+import {IDisease} from "../../shared/model/disease.model";
 
 @Component({
   selector: 'jhi-diagnosing',

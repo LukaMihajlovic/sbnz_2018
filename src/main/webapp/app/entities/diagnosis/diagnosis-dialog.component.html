@@ -54,6 +54,12 @@
                 <option [ngValue]="getSelected(diagnosis.symptoms, symptomOption)" *ngFor="let symptomOption of symptoms; trackBy: trackSymptomById">{{symptomOption.id}}</option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="field_disease">Disease</label>
+            <select class="form-control" id="field_disease" multiple name="disease" [(ngModel)]="diagnosis.diseases">
+                <option [ngValue]="getSelected(diagnosis.diseases, diseaseOption)" *ngFor="let diseaseOption of diseases; trackBy: trackDiseaseById">{{diseaseOption.id}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

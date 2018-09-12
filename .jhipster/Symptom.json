@@ -7,6 +7,13 @@
             "relationshipType": "many-to-many",
             "ownerSide": false,
             "otherEntityRelationshipName": "symptoms"
+        },
+        {
+            "relationshipName": "disease",
+            "otherEntityName": "disease",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "symptom"
         }
     ],
     "fields": [

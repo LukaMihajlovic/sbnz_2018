@@ -36,6 +36,12 @@
                 <a [routerLink]="['/symptom', symptoms?.id ]">{{symptoms.id}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
+        <dt><span>Disease</span></dt>
+        <dd>
+            <span *ngFor="let disease of diagnosis.diseases; let last = last">
+                <a [routerLink]="['/disease', disease?.id ]">{{disease.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
     </dl>
 
     <button type="submit"

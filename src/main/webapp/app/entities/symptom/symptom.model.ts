@@ -8,6 +8,7 @@ export class Symptom implements BaseEntity {
         public high?: number,
         public spec?: boolean,
         public diagnoses?: BaseEntity[],
+        public diseases?: BaseEntity[],
     ) {
         this.spec = false;
     }

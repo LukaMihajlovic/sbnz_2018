@@ -9,6 +9,7 @@ export class Diagnosis implements BaseEntity {
         public anamnesis?: BaseEntity,
         public drugs?: BaseEntity[],
         public symptoms?: BaseEntity[],
+        public diseases?: BaseEntity[],
     ) {
         this.recovery = false;
     }

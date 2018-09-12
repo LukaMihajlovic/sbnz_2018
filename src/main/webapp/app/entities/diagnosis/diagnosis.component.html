@@ -23,6 +23,7 @@
             <th><span>Anamnesis</span></th>
             <th><span>Drugs</span></th>
             <th><span>Symptoms</span></th>
+            <th><span>Disease</span></th>
             <th></th>
             </tr>
             </thead>
@@ -49,6 +50,11 @@
                 <td>
                     <span *ngFor="let symptoms of diagnosis.symptoms; let last = last">
                             <a class="form-control-static" [routerLink]="['../symptom', symptoms?.id ]">{{symptoms.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let disease of diagnosis.diseases; let last = last">
+                            <a class="form-control-static" [routerLink]="['../disease', disease?.id ]">{{disease.id}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">

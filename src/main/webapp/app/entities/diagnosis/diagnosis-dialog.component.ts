@@ -13,6 +13,7 @@ import { Doctor, DoctorService } from '../doctor';
 import { Anamnesis, AnamnesisService } from '../anamnesis';
 import { Drug, DrugService } from '../drug';
 import { Symptom, SymptomService } from '../symptom';
+import { Disease, DiseaseService } from '../disease';
 
 @Component({
     selector: 'jhi-diagnosis-dialog',
@@ -30,6 +31,8 @@ export class DiagnosisDialogComponent implements OnInit {
     drugs: Drug[];
 
     symptoms: Symptom[];
+
+    diseases: Disease[];
     dateDp: any;
 
     constructor(
@@ -40,6 +43,7 @@ export class DiagnosisDialogComponent implements OnInit {
         private anamnesisService: AnamnesisService,
         private drugService: DrugService,
         private symptomService: SymptomService,
+        private diseaseService: DiseaseService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -54,6 +58,8 @@ export class DiagnosisDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<Drug[]>) => { this.drugs = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.symptomService.query()
             .subscribe((res: HttpResponse<Symptom[]>) => { this.symptoms = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.diseaseService.query()
+            .subscribe((res: HttpResponse<Disease[]>) => { this.diseases = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -103,6 +109,10 @@ export class DiagnosisDialogComponent implements OnInit {
     }
 
     trackSymptomById(index: number, item: Symptom) {
+        return item.id;
+    }
+
+    trackDiseaseById(index: number, item: Disease) {
         return item.id;
     }
 

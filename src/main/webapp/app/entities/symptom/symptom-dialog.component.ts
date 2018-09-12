@@ -10,6 +10,7 @@ import { Symptom } from './symptom.model';
 import { SymptomPopupService } from './symptom-popup.service';
 import { SymptomService } from './symptom.service';
 import { Diagnosis, DiagnosisService } from '../diagnosis';
+import { Disease, DiseaseService } from '../disease';
 
 @Component({
     selector: 'jhi-symptom-dialog',
@@ -22,11 +23,14 @@ export class SymptomDialogComponent implements OnInit {
 
     diagnoses: Diagnosis[];
 
+    diseases: Disease[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private symptomService: SymptomService,
         private diagnosisService: DiagnosisService,
+        private diseaseService: DiseaseService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -35,6 +39,8 @@ export class SymptomDialogComponent implements OnInit {
         this.isSaving = false;
         this.diagnosisService.query()
             .subscribe((res: HttpResponse<Diagnosis[]>) => { this.diagnoses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.diseaseService.query()
+            .subscribe((res: HttpResponse<Disease[]>) => { this.diseases = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -72,6 +78,10 @@ export class SymptomDialogComponent implements OnInit {
     }
 
     trackDiagnosisById(index: number, item: Diagnosis) {
+        return item.id;
+    }
+
+    trackDiseaseById(index: number, item: Disease) {
         return item.id;
     }
 

@@ -42,6 +42,11 @@ public class Symptom implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
+    @ManyToMany(mappedBy = "symptoms")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Disease> diseases = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -126,6 +131,31 @@ public class Symptom implements Serializable {
 
     public void setDiagnoses(Set<Diagnosis> diagnoses) {
         this.diagnoses = diagnoses;
+    }
+
+    public Set<Disease> getDiseases() {
+        return diseases;
+    }
+
+    public Symptom diseases(Set<Disease> diseases) {
+        this.diseases = diseases;
+        return this;
+    }
+
+    public Symptom addDisease(Disease disease) {
+        this.diseases.add(disease);
+        disease.getSymptoms().add(this);
+        return this;
+    }
+
+    public Symptom removeDisease(Disease disease) {
+        this.diseases.remove(disease);
+        disease.getSymptoms().remove(this);
+        return this;
+    }
+
+    public void setDiseases(Set<Disease> diseases) {
+        this.diseases = diseases;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

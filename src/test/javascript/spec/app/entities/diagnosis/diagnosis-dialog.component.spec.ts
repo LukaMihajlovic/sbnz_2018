@@ -13,6 +13,7 @@ import { DoctorService } from '../../../../../../main/webapp/app/entities/doctor
 import { AnamnesisService } from '../../../../../../main/webapp/app/entities/anamnesis';
 import { DrugService } from '../../../../../../main/webapp/app/entities/drug';
 import { SymptomService } from '../../../../../../main/webapp/app/entities/symptom';
+import { DiseaseService } from '../../../../../../main/webapp/app/entities/disease';
 
 describe('Component Tests', () => {
 
@@ -32,6 +33,7 @@ describe('Component Tests', () => {
                     AnamnesisService,
                     DrugService,
                     SymptomService,
+                    DiseaseService,
                     DiagnosisService
                 ]
             })

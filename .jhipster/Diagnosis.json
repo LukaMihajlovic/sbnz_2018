@@ -28,6 +28,14 @@
             "otherEntityField": "id",
             "ownerSide": true,
             "otherEntityRelationshipName": "diagnosis"
+        },
+        {
+            "relationshipName": "disease",
+            "otherEntityName": "disease",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "diagnosis"
         }
     ],
     "fields": [

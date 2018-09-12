@@ -51,6 +51,13 @@ public class Diagnosis implements Serializable {
                inverseJoinColumns = @JoinColumn(name="symptoms_id", referencedColumnName="id"))
     private Set<Symptom> symptoms = new HashSet<>();
 
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "diagnosis_disease",
+               joinColumns = @JoinColumn(name="diagnoses_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="diseases_id", referencedColumnName="id"))
+    private Set<Disease> diseases = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -160,6 +167,31 @@ public class Diagnosis implements Serializable {
 
     public void setSymptoms(Set<Symptom> symptoms) {
         this.symptoms = symptoms;
+    }
+
+    public Set<Disease> getDiseases() {
+        return diseases;
+    }
+
+    public Diagnosis diseases(Set<Disease> diseases) {
+        this.diseases = diseases;
+        return this;
+    }
+
+    public Diagnosis addDisease(Disease disease) {
+        this.diseases.add(disease);
+        disease.getDiagnoses().add(this);
+        return this;
+    }
+
+    public Diagnosis removeDisease(Disease disease) {
+        this.diseases.remove(disease);
+        disease.getDiagnoses().remove(this);
+        return this;
+    }
+
+    public void setDiseases(Set<Disease> diseases) {
+        this.diseases = diseases;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
