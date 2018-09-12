@@ -15,38 +15,20 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Symptom.
+        Added the entity Uiawq.
     -->
-    <changeSet id="20180911021040-1" author="jhipster">
-        <createTable tableName="symptom">
+    <changeSet id="20180911232658-1" author="jhipster">
+        <createTable tableName="uiawq">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="low" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="high" type="${floatType}">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="spec" type="bit">
+            <column name="qwe" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/symptoms.csv"
-                  separator=";"
-                  tableName="symptom">
-        </loadData>
-
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

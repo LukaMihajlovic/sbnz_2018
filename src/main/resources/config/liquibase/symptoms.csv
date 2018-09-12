@@ -1,0 +1,28 @@
+id;name;low;high;spec
+
+1;Snot;0;0;false
+2;Sore throat;0;0;false
+3;Headache;0;0;false
+4;Sneezing;0;0;false
+5;Coughing;0;0;false
+6;High body temperature;0;0;false
+7;Chills;0;0;false
+8;Earache;0;0;false
+9;Loss of appetite;0;0;false
+10;Fatigue;0;0;false
+11;Mucus;0;0;false
+12;Swollen eyes;0;0;false
+13;Common cold or fever in the last 60 days;0;0;true
+14;10 occurrences of hypertension in the last 6 months;0;0;true
+15;Frequent urination;0;0;false
+16;Weight loss;0;0;false
+17;Nausea and Vomiting;0;0;false
+18;Nocturia;0;0;false
+19;Swollen feet and ankles;0;0;false
+20;Gushing;0;0;false
+21;Chest pain;0;0;false
+22;Hypertension for more than 6 months;0;0;true
+23;Diagnosed with diabetes;0;0;true
+24;Is in surgical recovery;0;0;true
+25;In the last 14 days diagnosed with a disease which has high body temperature as a symptom;0;0;true
+26;In the last 21 days diagnosed with a disease for which was prescribed antibiotics;0;0;true
