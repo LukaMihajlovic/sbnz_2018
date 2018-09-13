@@ -2,6 +2,7 @@ import {IDiagnosis} from "./diagnosis.model";
 import {IIngredient} from "./ingredient.model";
 import {IDrug} from "./drug.model";
 
+
 export interface IAnamnesis {
     id?: number;
     currentDiagnosisId?: number;

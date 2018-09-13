@@ -1,32 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import {ISymptom} from "../../shared/model/symptom.model";
 import {SymptomService} from "../symptom/symptom.service";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
 import {debounceTime, map} from "rxjs/operators";
-import {IDisease} from "../../shared/model/disease.model";
+import {AnamnesisService} from '../anamnesis/anamnesis.service';
+import {DiseaseService} from "../disease/disease.service";
+import {DrugService} from "../drug/drug.service";
+import {Symptom} from "../symptom/symptom.model";
+import {Disease} from "../disease/disease.model";
+import {Anamnesis} from "../anamnesis/anamnesis.model";
+import {Drug} from "../drug/drug.model";
 
 @Component({
   selector: 'jhi-diagnosing',
   templateUrl: './diagnosing.component.html',
-  styles: []
+  styles: [],
+    styleUrls: ['diagnosing.css']
 })
 export class DiagnosingComponent implements OnInit {
 
-    databaseSymptoms: ISymptom[] = [];
-    databaseDiseases: ISymptom[] = [];
+    recovery = false;
+    databaseSymptoms: Symptom[] = [];
+    databaseDiseases: Disease[] = [];
+    databaseAnamneses: Anamnesis[] = [];
+    databaseDrugs: Drug[] = [];
+    anamnesisCombo: any;
     symptom: any;
     disease: any;
-    enteredDiseases: IDisease[] = [];
-    enteredSymptoms: ISymptom[] = [];
+    enteredDiseases: Disease[] = [];
+    enteredSymptoms: Symptom[] = [];
     constructor(
         private symptomService: SymptomService,
+        private anamnesisService: AnamnesisService,
+        private diseaseService: DiseaseService,
+        private drugService: DrugService,
     ) {}
 
     ngOnInit() {
-        console.log(this.databaseSymptoms);
         this.symptomService.query().subscribe(
-            (res: HttpResponse<ISymptom[]>) => {
+            (res: HttpResponse<Symptom[]>) => {
                 for (const symp of res.body) {
                     if (!symp.spec) {
                         this.databaseSymptoms.push(symp);
@@ -34,9 +46,33 @@ export class DiagnosingComponent implements OnInit {
                 }
             }
         );
-        console.log(this.databaseSymptoms);
+        this.diseaseService.query().subscribe(
+            (res: HttpResponse<Disease[]>) => {
+
+                this.databaseDiseases = res.body;
+            }
+        );
+        this.anamnesisService.query().subscribe(
+            (res: HttpResponse<Anamnesis[]>) => {
+
+                this.databaseAnamneses = res.body;
+            }
+        );
+        console.log(this.databaseAnamneses.length)
+        console.log(this.databaseAnamneses.length)
+
+        this.drugService.query().subscribe(
+            (res: HttpResponse<Drug[]>) => {
+
+                this.databaseDrugs = res.body;
+            }
+        );
+
     }
 
+    run(){
+
+    }
 
     enterSymptom(){
         if (!this.enteredSymptoms.includes(this.symptom)) {
@@ -71,6 +107,8 @@ export class DiagnosingComponent implements OnInit {
                     term === '' ? [] : this.databaseSymptoms.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
             )
         );
+
+
 
     formatMatches = (value: any) => value.name || ''
 

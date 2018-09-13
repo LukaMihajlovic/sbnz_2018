@@ -2,12 +2,26 @@
     <div class="row">
 
         <div class="col-6">
-            <label for="typeahead-basic">Search for symptoms:</label>
-            <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="symptom" [ngbTypeahead]="search"
-                   [resultTemplate]="rt" [inputFormatter]="formatMatches" [resultFormatter]="formatMatches"   />
-            <button class="btn btn-primary" (click)="enterSymptom()">
-                <span>Enter</span>
-            </button>
+            <div>
+                <label class="form-control-label" for="field_anamnesis">Anamnesis</label>
+                <select class="form-control" id="field_anamnesis" name="anamnesis" [(ngModel)]="anamnesisCombo">
+                    <option [ngValue]="ana.id" *ngFor="let ana of databaseAnamneses; trackBy: trackAnamnesisById">{{ana.id}}
+                    </option>
+                </select>
+                <label class="run"><input type="checkbox" [(ngModel)]="recovery"> In recovery</label>
+                <br>
+                <label class="run" for="typeahead-basic">Symptoms:</label>
+                <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="symptom" [ngbTypeahead]="search"
+                       [resultTemplate]="rt" [inputFormatter]="formatMatches" [resultFormatter]="formatMatches"   />
+                <button class="btn btn-primary" (click)="enterSymptom()">
+                    <span>Enter symptom</span>
+                </button>
+            </div>
+            <div class="run">
+                <button class="btn btn-success" (click)="run()">
+                    <span>Run resoner</span>
+                </button>
+            </div>
         </div>
 
         <div class="col-6">
@@ -17,10 +31,6 @@
                 </h4>
                 <div class="row">
                     <table class="table table-striped">
-                        <thead>
-                        <th><span>Name</span></th>
-                        <th></th>
-                        </thead>
                         <tbody>
                         <tr *ngFor="let s of enteredSymptoms; let i = index">
                             <td>{{ s.name }}</td>

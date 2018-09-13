@@ -1,4 +1,5 @@
-import { BaseEntity } from './../../shared';
+
+import {BaseEntity} from "../../shared/model/base-entity";
 
 export class Anamnesis implements BaseEntity {
     constructor(

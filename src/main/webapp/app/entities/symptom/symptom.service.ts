@@ -3,8 +3,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
-import { Symptom } from './symptom.model';
 import { createRequestOption } from '../../shared';
+import {Symptom} from "./symptom.model";
 
 export type EntityResponseType = HttpResponse<Symptom>;
 

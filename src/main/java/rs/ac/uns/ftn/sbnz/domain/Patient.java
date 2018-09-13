@@ -30,7 +30,7 @@ public class Patient implements Serializable {
     private String lastName;
 
     @OneToOne
-    @JsonIgnore
+    @JoinColumn(unique = true)
     private Anamnesis anamnesis;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

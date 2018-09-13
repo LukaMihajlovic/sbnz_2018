@@ -1,5 +1,10 @@
 package rs.ac.uns.ftn.sbnz;
 
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieScanner;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+import org.springframework.context.annotation.Bean;
 import rs.ac.uns.ftn.sbnz.config.ApplicationProperties;
 import rs.ac.uns.ftn.sbnz.config.DefaultProfileUtil;
 
@@ -20,6 +25,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
@@ -80,5 +86,19 @@ public class SbnzApp {
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
             env.getActiveProfiles());
+    }
+
+    @Bean
+    public KieContainer kieContainer() {
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kContainer = ks.newKieContainer(ks.newReleaseId("rs.ac.uns.ftn.sbnz", "rule-engine", "0.0.1-SNAPSHOT"));
+        KieScanner kScanner = ks.newKieScanner(kContainer);
+        kScanner.start(1000);
+        return kContainer;
+    }
+
+    @Bean
+    public HashMap<String, KieSession> kieSessions() {
+        return new HashMap<>();
     }
 }

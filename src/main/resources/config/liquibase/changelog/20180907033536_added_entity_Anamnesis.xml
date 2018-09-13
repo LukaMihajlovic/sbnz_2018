@@ -26,7 +26,7 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="anamnesis_allergies_ingredient">
             <column name="allergies_ingredients_id" type="bigint">
                 <constraints nullable="false"/>
@@ -37,7 +37,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="anamneses_id, allergies_ingredients_id" tableName="anamnesis_allergies_ingredient"/>
-        
+
         <createTable tableName="anamnesis_allergies_drugs">
             <column name="allergies_drugs_id" type="bigint">
                 <constraints nullable="false"/>
@@ -48,7 +48,13 @@
         </createTable>
 
         <addPrimaryKey columnNames="anamneses_id, allergies_drugs_id" tableName="anamnesis_allergies_drugs"/>
-        
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/anamneses.csv"
+                  separator=";"
+                  tableName="anamnesis">
+        </loadData>
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
