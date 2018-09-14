@@ -77,4 +77,11 @@ export class DiagnosisService {
             .convertLocalDateToServer(diagnosis.date);
         return copy;
     }
+
+    currentDiagnosis(diagnosis: Diagnosis): Observable<any> {
+        let path = this.resourceUrl + '/current'
+        return this.http.put<Diagnosis>(path, diagnosis, {
+            observe: 'response'
+        });
+    }
 }

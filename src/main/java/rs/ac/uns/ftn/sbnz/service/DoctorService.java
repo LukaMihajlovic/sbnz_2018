@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.sbnz.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import rs.ac.uns.ftn.sbnz.domain.Doctor;
 import rs.ac.uns.ftn.sbnz.repository.DoctorRepository;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Doctor.
@@ -19,6 +21,9 @@ public class DoctorService {
     private final Logger log = LoggerFactory.getLogger(DoctorService.class);
 
     private final DoctorRepository doctorRepository;
+
+    @Autowired
+    private UserService userService;
 
     public DoctorService(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
@@ -66,5 +71,12 @@ public class DoctorService {
     public void delete(Long id) {
         log.debug("Request to delete Doctor : {}", id);
         doctorRepository.delete(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Doctor findOneByUserLogin(String login) {
+        Long userId = userService.findOneByLogin(login).get().getId();
+
+        return doctorRepository.findByUserId(userId);
     }
 }

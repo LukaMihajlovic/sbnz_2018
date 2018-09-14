@@ -10,6 +10,8 @@ import {Symptom} from "../symptom/symptom.model";
 import {Disease} from "../disease/disease.model";
 import {Anamnesis} from "../anamnesis/anamnesis.model";
 import {Drug} from "../drug/drug.model";
+import {Diagnosis} from "../diagnosis/diagnosis.model";
+import {DiagnosisService} from "../diagnosis/diagnosis.service";
 
 @Component({
   selector: 'jhi-diagnosing',
@@ -23,13 +25,18 @@ export class DiagnosingComponent implements OnInit {
     databaseSymptoms: Symptom[] = [];
     databaseDiseases: Disease[] = [];
     databaseAnamneses: Anamnesis[] = [];
+    enteredData: Diagnosis = {};
     databaseDrugs: Drug[] = [];
     anamnesisCombo: any;
+    anamnesis: any;
+    retAnamnesis: any;
     symptom: any;
     disease: any;
     enteredDiseases: Disease[] = [];
     enteredSymptoms: Symptom[] = [];
+
     constructor(
+        private diagnosisService: DiagnosisService,
         private symptomService: SymptomService,
         private anamnesisService: AnamnesisService,
         private diseaseService: DiseaseService,
@@ -71,7 +78,13 @@ export class DiagnosingComponent implements OnInit {
     }
 
     run(){
-
+        this.enteredData.anamnesis = this.anamnesis;
+        this.enteredData.symptoms = this.enteredSymptoms;
+        this.enteredData.recovery = this.recovery;
+        this.diagnosisService.currentDiagnosis(this.enteredData).subscribe(
+            res => {
+                this.retAnamnesis = res.body;
+            })
     }
 
     enterSymptom(){
@@ -108,9 +121,19 @@ export class DiagnosingComponent implements OnInit {
             )
         );
 
+    searchAnamnesis = (text$: Observable<string>) =>
+        text$.pipe(
+            debounceTime(200),
+            map(
+                term =>
+                    term === '' ? [] : this.databaseAnamneses.filter(v => v.jmbg.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
+            )
+        );
+
 
 
     formatMatches = (value: any) => value.name || ''
+    formatMatchesAnam = (value: any) => value.jmbg || ''
 
 
 

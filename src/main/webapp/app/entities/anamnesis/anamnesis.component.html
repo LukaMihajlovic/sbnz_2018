@@ -17,6 +17,7 @@
             <thead>
             <tr>
             <th><span>ID</span></th>
+            <th><span>Jmbg</span></th>
             <th><span>Current Diagnosis</span></th>
             <th><span>Allergies Ingredient</span></th>
             <th><span>Allergies Drugs</span></th>
@@ -26,6 +27,7 @@
             <tbody>
             <tr *ngFor="let anamnesis of anamneses ;trackBy: trackId">
                 <td><a [routerLink]="['../anamnesis', anamnesis.id ]">{{anamnesis.id}}</a></td>
+                <td>{{anamnesis.jmbg}}</td>
                 <td>
                     <div *ngIf="anamnesis.currentDiagnosis">
                         <a [routerLink]="['../diagnosis', anamnesis.currentDiagnosis?.id ]" >{{anamnesis.currentDiagnosis?.id}}</a>

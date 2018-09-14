@@ -93,7 +93,7 @@ public class SbnzApp {
         KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.newKieContainer(ks.newReleaseId("rs.ac.uns.ftn.sbnz", "rule-engine", "0.0.1-SNAPSHOT"));
         KieScanner kScanner = ks.newKieScanner(kContainer);
-        kScanner.start(1000);
+        kScanner.start(5000);
         return kContainer;
     }
 

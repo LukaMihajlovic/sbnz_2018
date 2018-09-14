@@ -39,6 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = SbnzApp.class)
 public class AnamnesisResourceIntTest {
 
+    private static final String DEFAULT_JMBG = "AAAAAAAAAA";
+    private static final String UPDATED_JMBG = "BBBBBBBBBB";
+
     @Autowired
     private AnamnesisRepository anamnesisRepository;
 
@@ -79,7 +82,8 @@ public class AnamnesisResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Anamnesis createEntity(EntityManager em) {
-        Anamnesis anamnesis = new Anamnesis();
+        Anamnesis anamnesis = new Anamnesis()
+            .jmbg(DEFAULT_JMBG);
         return anamnesis;
     }
 
@@ -103,6 +107,7 @@ public class AnamnesisResourceIntTest {
         List<Anamnesis> anamnesisList = anamnesisRepository.findAll();
         assertThat(anamnesisList).hasSize(databaseSizeBeforeCreate + 1);
         Anamnesis testAnamnesis = anamnesisList.get(anamnesisList.size() - 1);
+        assertThat(testAnamnesis.getJmbg()).isEqualTo(DEFAULT_JMBG);
     }
 
     @Test
@@ -134,7 +139,8 @@ public class AnamnesisResourceIntTest {
         restAnamnesisMockMvc.perform(get("/api/anamneses?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(anamnesis.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(anamnesis.getId().intValue())))
+            .andExpect(jsonPath("$.[*].jmbg").value(hasItem(DEFAULT_JMBG.toString())));
     }
 
     @Test
@@ -147,7 +153,8 @@ public class AnamnesisResourceIntTest {
         restAnamnesisMockMvc.perform(get("/api/anamneses/{id}", anamnesis.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(anamnesis.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(anamnesis.getId().intValue()))
+            .andExpect(jsonPath("$.jmbg").value(DEFAULT_JMBG.toString()));
     }
 
     @Test
@@ -170,6 +177,8 @@ public class AnamnesisResourceIntTest {
         Anamnesis updatedAnamnesis = anamnesisRepository.findOne(anamnesis.getId());
         // Disconnect from session so that the updates on updatedAnamnesis are not directly saved in db
         em.detach(updatedAnamnesis);
+        updatedAnamnesis
+            .jmbg(UPDATED_JMBG);
 
         restAnamnesisMockMvc.perform(put("/api/anamneses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -180,6 +189,7 @@ public class AnamnesisResourceIntTest {
         List<Anamnesis> anamnesisList = anamnesisRepository.findAll();
         assertThat(anamnesisList).hasSize(databaseSizeBeforeUpdate);
         Anamnesis testAnamnesis = anamnesisList.get(anamnesisList.size() - 1);
+        assertThat(testAnamnesis.getJmbg()).isEqualTo(UPDATED_JMBG);
     }
 
     @Test

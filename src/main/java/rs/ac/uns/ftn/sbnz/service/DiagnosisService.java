@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service Implementation for managing Diagnosis.
@@ -33,6 +34,10 @@ public class DiagnosisService {
     public Diagnosis save(Diagnosis diagnosis) {
         log.debug("Request to save Diagnosis : {}", diagnosis);
         return diagnosisRepository.save(diagnosis);
+    }
+
+    public Set<Diagnosis> findAllWithEagerRelationshipsByAnamnesisId(Long id) {
+        return diagnosisRepository.findAllWithEagerRelationshipsByAnamnesisId(id);
     }
 
     /**

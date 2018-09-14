@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.sbnz.service;
 
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.slf4j.Logger;
@@ -14,9 +16,9 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @Service
-public class SessionService implements ApplicationEventPublisherAware {
+public class RunService implements ApplicationEventPublisherAware {
 
-    private final Logger log = LoggerFactory.getLogger(SessionService.class);
+    private final Logger log = LoggerFactory.getLogger(RunService.class);
 
 
     @Autowired
@@ -28,8 +30,11 @@ public class SessionService implements ApplicationEventPublisherAware {
         Optional<String> login = SecurityUtils.getCurrentUserLogin();
         if (!login.isPresent())
             return;
-        KieSession kieSession = kieSessions.get(login.get());
-        kieSession.setGlobal("sessionService", this);
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kContainer = kieServices.getKieClasspathContainer();
+        KieSession kieSession = kContainer.newKieSession();
+        //KieSession kieSession = kieSessions.get(login.get());
+        kieSession.setGlobal("runService", this);
         FactHandle factHandle = kieSession.insert(anamnesis);
         kieSession.getAgenda().getAgendaGroup("AnalizeDiseases").setFocus();
         int rulesFired = kieSession.fireAllRules();
@@ -45,3 +50,4 @@ public class SessionService implements ApplicationEventPublisherAware {
     }
 
 }
+

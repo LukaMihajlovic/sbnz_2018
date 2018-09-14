@@ -1,8 +1,11 @@
 package rs.ac.uns.ftn.sbnz.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import rs.ac.uns.ftn.sbnz.domain.Diagnosis;
-import rs.ac.uns.ftn.sbnz.service.DiagnosisService;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
+import rs.ac.uns.ftn.sbnz.domain.*;
+import rs.ac.uns.ftn.sbnz.security.SecurityUtils;
+import rs.ac.uns.ftn.sbnz.service.*;
 import rs.ac.uns.ftn.sbnz.web.rest.errors.BadRequestAlertException;
 import rs.ac.uns.ftn.sbnz.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -11,9 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +34,15 @@ public class DiagnosisResource {
     private static final String ENTITY_NAME = "diagnosis";
 
     private final DiagnosisService diagnosisService;
+
+    @Autowired
+    private RunService runService;
+
+    @Autowired
+    private DoctorService doctorService;
+
+    @Autowired
+    private AnamnesisService anamnesisService;
 
     public DiagnosisResource(DiagnosisService diagnosisService) {
         this.diagnosisService = diagnosisService;
@@ -114,5 +128,27 @@ public class DiagnosisResource {
         log.debug("REST request to delete Diagnosis : {}", id);
         diagnosisService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @PutMapping("/diagnoses/current")
+    @Timed
+    public ResponseEntity<Anamnesis> findDisease(@Valid @RequestBody Diagnosis diagnosis) {
+
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Doctor dr = doctorService.findOneByUserLogin(userLogin.get());
+        diagnosis.setDate(LocalDate.now());
+        diagnosis.setDoctor(dr);
+        diagnosisService.save(diagnosis);
+
+        Anamnesis anamnesis = diagnosis.getAnamnesis();
+        anamnesis.setCurrentDiagnosis(diagnosis);
+        anamnesisService.save(anamnesis);
+        anamnesis.setDiagnoses(diagnosisService.findAllWithEagerRelationshipsByAnamnesisId(anamnesis.getId()));
+        runService.executeRules(anamnesis);
+
+        anamnesisService.save(anamnesis);
+
+
+        return ResponseEntity.ok().body(new Anamnesis());
     }
 }

@@ -25,6 +25,9 @@ public class Anamnesis implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "jmbg")
+    private String jmbg;
+
     @OneToMany(mappedBy = "anamnesis")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -55,6 +58,19 @@ public class Anamnesis implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getJmbg() {
+        return jmbg;
+    }
+
+    public Anamnesis jmbg(String jmbg) {
+        this.jmbg = jmbg;
+        return this;
+    }
+
+    public void setJmbg(String jmbg) {
+        this.jmbg = jmbg;
     }
 
     public Set<Diagnosis> getDiagnoses() {
@@ -170,6 +186,7 @@ public class Anamnesis implements Serializable {
     public String toString() {
         return "Anamnesis{" +
             "id=" + getId() +
+            ", jmbg='" + getJmbg() + "'" +
             "}";
     }
 }

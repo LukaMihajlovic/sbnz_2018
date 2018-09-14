@@ -1,8 +1,10 @@
 
-import {ISymptom} from "./symptom.model";
 
-export interface IDiagnosing {
-    symptoms?: ISymptom[];
+
+import {Symptom} from "../../entities/symptom/symptom.model";
+
+export interface Diagnosing {
+    symptoms?: Symptom[];
     anamnesisId?: number;
     diseases?: any;
 }

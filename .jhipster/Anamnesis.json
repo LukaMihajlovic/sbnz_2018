@@ -32,7 +32,12 @@
             "otherEntityRelationshipName": "anamnesis"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "jmbg",
+            "fieldType": "String"
+        }
+    ],
     "changelogDate": "20180907033536",
     "dto": "no",
     "service": "serviceClass",

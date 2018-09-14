@@ -1,10 +1,10 @@
 id;name;factor
 
-1;Common cold;0
-2;Fever;0
-3;Tonsillitis;0
-4;Sinus infection;0
-5;Hypertension;0
-6;Diabetes;0
-7;Chronic kidney disease;0
-8;Acute kidney injury;0
+1;Prehlada;0
+2;Groznica;0
+3;Upala krajnika;0
+4;Sinusna infekcija;0
+5;Hipertenzija;0
+6;Dijabetes;0
+7;Hronicna bubrezna bolest;0
+8;Akutna povreda bubrega;0

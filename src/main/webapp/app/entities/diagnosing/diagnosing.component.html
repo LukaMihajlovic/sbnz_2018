@@ -3,23 +3,21 @@
 
         <div class="col-6">
             <div>
-                <label class="form-control-label" for="field_anamnesis">Anamnesis</label>
-                <select class="form-control" id="field_anamnesis" name="anamnesis" [(ngModel)]="anamnesisCombo">
-                    <option [ngValue]="ana.id" *ngFor="let ana of databaseAnamneses; trackBy: trackAnamnesisById">{{ana.id}}
-                    </option>
-                </select>
-                <label class="run"><input type="checkbox" [(ngModel)]="recovery"> In recovery</label>
+                <label class="run" for="karton">Karton:</label>
+                <input id="karton" type="text" class="form-control" [(ngModel)]="anamnesis" [ngbTypeahead]="searchAnamnesis"
+                       [resultTemplate]="rt" [inputFormatter]="formatMatchesAnam" [resultFormatter]="formatMatchesAnam"   />
+                <label class="run"><input type="checkbox" [(ngModel)]="recovery"> Oporavlja se od operacije</label>
                 <br>
-                <label class="run" for="typeahead-basic">Symptoms:</label>
-                <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="symptom" [ngbTypeahead]="search"
+                <label class="run" for="simptom">Simptomi:</label>
+                <input id="simptom" type="text" class="form-control" [(ngModel)]="symptom" [ngbTypeahead]="search"
                        [resultTemplate]="rt" [inputFormatter]="formatMatches" [resultFormatter]="formatMatches"   />
                 <button class="btn btn-primary" (click)="enterSymptom()">
-                    <span>Enter symptom</span>
+                    <span>Dodaj</span>
                 </button>
             </div>
             <div class="run">
                 <button class="btn btn-success" (click)="run()">
-                    <span>Run resoner</span>
+                    <span>Pronadji bolest</span>
                 </button>
             </div>
         </div>
@@ -27,16 +25,16 @@
         <div class="col-6">
             <div class="container">
                 <h4>
-                    <span>Symptoms</span>
+                    <span>Simptomi</span>
                 </h4>
                 <div class="row">
                     <table class="table table-striped">
                         <tbody>
                         <tr *ngFor="let s of enteredSymptoms; let i = index">
                             <td>{{ s.name }}</td>
-                            <td><input *ngIf="s.name === 'High body temperature'"
+                            <td><input *ngIf="s.name === 'Visoka telesna temperatura'"
                                        [(ngModel)]="s.low"
-                                       type="number" step="0.1" min="37" [value]="37">
+                                       type="number" min="37">
                             </td>
                             <td>
                                 <button class="btn btn-primary" (click)="removeFromEntered(s.name)">
