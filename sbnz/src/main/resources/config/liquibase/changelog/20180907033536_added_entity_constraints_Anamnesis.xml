@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Anamnesis.
+    -->
+    <changeSet id="20180907033536-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="current_diagnosis_id"
+                                 baseTableName="anamnesis"
+                                 constraintName="fk_anamnesis_current_diagnosis_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="diagnosis"/>
+
+        <addForeignKeyConstraint baseColumnNames="anamneses_id"
+                                 baseTableName="anamnesis_allergies_ingredient"
+                                 constraintName="fk_anamnesis_allergies_ingredient_anamneses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="anamnesis"/>
+        <addForeignKeyConstraint baseColumnNames="allergies_ingredients_id"
+                                 baseTableName="anamnesis_allergies_ingredient"
+                                 constraintName="fk_anamnesis_allergies_ingredient_allergies_ingredients_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ingredient"/>
+        
+        <addForeignKeyConstraint baseColumnNames="anamneses_id"
+                                 baseTableName="anamnesis_allergies_drugs"
+                                 constraintName="fk_anamnesis_allergies_drugs_anamneses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="anamnesis"/>
+        <addForeignKeyConstraint baseColumnNames="allergies_drugs_id"
+                                 baseTableName="anamnesis_allergies_drugs"
+                                 constraintName="fk_anamnesis_allergies_drugs_allergies_drugs_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="drug"/>
+        
+    </changeSet>
+</databaseChangeLog>

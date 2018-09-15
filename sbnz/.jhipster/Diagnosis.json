@@ -1,0 +1,57 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "doctor",
+            "otherEntityName": "doctor",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "anamnesis",
+            "otherEntityName": "anamnesis",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "drugs",
+            "otherEntityName": "drug",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "diagnosis"
+        },
+        {
+            "relationshipName": "symptoms",
+            "otherEntityName": "symptom",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "diagnosis"
+        },
+        {
+            "relationshipName": "disease",
+            "otherEntityName": "disease",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "diagnosis"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "recovery",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180907030325",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "diagnosis",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

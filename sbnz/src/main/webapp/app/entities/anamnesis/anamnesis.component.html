@@ -1,0 +1,76 @@
+<div>
+    <h2>
+        <span>Anamneses</span>
+        <button class="btn btn-primary float-right jh-create-entity create-anamnesis" [routerLink]="['/', { outlets: { popup: ['anamnesis-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Anamnesis
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="anamneses">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Jmbg</span></th>
+            <th><span>Current Diagnosis</span></th>
+            <th><span>Allergies Ingredient</span></th>
+            <th><span>Allergies Drugs</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let anamnesis of anamneses ;trackBy: trackId">
+                <td><a [routerLink]="['../anamnesis', anamnesis.id ]">{{anamnesis.id}}</a></td>
+                <td>{{anamnesis.jmbg}}</td>
+                <td>
+                    <div *ngIf="anamnesis.currentDiagnosis">
+                        <a [routerLink]="['../diagnosis', anamnesis.currentDiagnosis?.id ]" >{{anamnesis.currentDiagnosis?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <span *ngFor="let allergiesIngredient of anamnesis.allergiesIngredients; let last = last">
+                            <a class="form-control-static" [routerLink]="['../ingredient', allergiesIngredient?.id ]">{{allergiesIngredient.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let allergiesDrugs of anamnesis.allergiesDrugs; let last = last">
+                            <a class="form-control-static" [routerLink]="['../drug', allergiesDrugs?.id ]">{{allergiesDrugs.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../anamnesis', anamnesis.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'anamnesis/'+ anamnesis.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'anamnesis/'+ anamnesis.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

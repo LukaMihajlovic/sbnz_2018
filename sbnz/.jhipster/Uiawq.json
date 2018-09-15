@@ -1,0 +1,16 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "qwe",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180911232658",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "uiawq",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

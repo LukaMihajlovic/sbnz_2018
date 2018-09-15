@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "anamnesis",
+            "otherEntityName": "anamnesis",
+            "relationshipType": "one-to-one",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "patient"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "firstName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180907032226",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "patient",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

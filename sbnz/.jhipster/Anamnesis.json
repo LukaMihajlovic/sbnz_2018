@@ -1,0 +1,47 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "diagnosis",
+            "otherEntityName": "diagnosis",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "anamnesis"
+        },
+        {
+            "relationshipName": "currentDiagnosis",
+            "otherEntityName": "diagnosis",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "anamnesis"
+        },
+        {
+            "relationshipName": "allergiesIngredient",
+            "otherEntityName": "ingredient",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "anamnesis"
+        },
+        {
+            "relationshipName": "allergiesDrugs",
+            "otherEntityName": "drug",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "anamnesis"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "jmbg",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180907033536",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "anamnesis",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

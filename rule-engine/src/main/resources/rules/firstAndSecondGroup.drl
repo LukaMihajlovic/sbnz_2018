@@ -1,0 +1,170 @@
+package rules;
+
+import java.lang.Integer;
+import java.util.Set;
+import java.util.Date;
+import java.time.LocalDate;
+
+import rs.ac.uns.ftn.sbnz.domain.Anamnesis;
+import rs.ac.uns.ftn.sbnz.domain.Disease
+import rs.ac.uns.ftn.sbnz.domain.Symptom;
+import rs.ac.uns.ftn.sbnz.domain.Diagnosis;
+import rs.ac.uns.ftn.sbnz.service.RunService
+import java.time.ZoneId;
+
+global RunService runService;
+
+
+rule "Check if disease is common cold"
+agenda-group "AnalizeDiseases"
+activation-group "FirstGroup"
+lock-on-active true
+salience( $percent )
+    when
+    	$anamnesis: Anamnesis ($symptoms: currentDiagnosis.symptoms)
+    	$percent: Number(doubleValue >= 80) from accumulate (
+    		Symptom(name.equals("Curenje iz nosa") || name.equals("Bol u grlu") || name.equals("Glavobolja") || name.equals("Kijanje") || name.equals("Kasalj")
+    		) from $symptoms,
+    		init ( int num = 0; ),
+    		action ( num += 1; ),
+    		result (((double)num/5)*100)
+    	)
+    then
+
+        System.out.println( "AKTIVIRALO SE 1" );
+        System.out.println($percent);
+
+end
+
+
+rule "Check if disease is fever"
+agenda-group "AnalizeDiseases"
+activation-group "FirstGroup"
+lock-on-active true
+salience( $percent )
+    when
+        $anamnesis: Anamnesis ($symptoms: currentDiagnosis.symptoms)
+        $percent: Number(doubleValue >= 57) from accumulate (
+            Symptom(name.equals("Curenje iz nosa") || name.equals("Bol u grlu") || name.equals("Glavobolja") || name.equals("Kijanje") || name.equals("Kasalj") ||
+            (name.equals("Visoka telesna temperatura") && low > 38) || name.equals("Drhtavica")
+            ) from $symptoms,
+            init ( int num = 0; ),
+            action ( num += 1; System.out.println(num);),
+            result (((double)num/7)*100)
+        )
+    then
+        System.out.println( "AKTIVIRALO SE 2" );
+        System.out.println($percent);
+end
+
+rule "Check if disease is tonsilitis"
+agenda-group "AnalizeDiseases"
+activation-group "FirstGroup"
+lock-on-active true
+salience( $percent )
+    when
+        $anamnesis: Anamnesis ($symptoms: currentDiagnosis.symptoms)
+        $percent: Number(doubleValue >= 49) from accumulate (
+            Symptom(name.equals("Zuti sekret iz nosa") || name.equals("Bol u grlu") || name.equals("Glavobolja")
+            || name.equals("Bol koji se siri do usiju") || name.equals("Umor") ||
+            (name.equals("Visoka telesna temperatura") && low >= 38 && low <=41) || name.equals("Drhtavica") || name.equals("Gubitak apetita")
+            ) from $symptoms,
+            init ( int num = 0; ),
+            action ( num += 1; ),
+            result (((double)num/8)*100)
+        )
+    then
+        System.out.println( "AKTIVIRALO SE 3" );
+        System.out.println($percent);
+end
+
+
+
+
+rule "Check if disease is sinus infection"
+agenda-group "AnalizeDiseases"
+activation-group "FirstGroup"
+lock-on-active true
+salience( $percent )
+    when
+        $anamnesis: Anamnesis ($symptoms: currentDiagnosis.symptoms, eval(sinusCheck($anamnesis)))
+        $percent: Number(doubleValue >= 57) from accumulate (
+            Symptom(name.equals("Zuti sekret iz nosa") || name.equals("Bol u grlu") || name.equals("Glavobolja")
+             || name.equals("Oticanje oko ociju") || name.equals("Kasalj") ||
+            (name.equals("Visoka telesna temperatura") && low >= 38)
+            ) from $symptoms,
+            init ( int num = 0; ),
+            action ( num += 1; ),
+            result (((double)num/7)*100)
+        )
+    then
+        System.out.println( "AKTIVIRALO SE 4" );
+end
+
+
+
+
+rule "Check if disease is hypertension"
+agenda-group "AnalizeDiseases"
+lock-on-active true
+    when
+        $anamnesis: Anamnesis ( hyperCheck($anamnesis) >= 10 )
+    then
+        System.out.println( "AKTIVIRALO SE 5");
+end
+
+
+
+rule "Check if disease is diabetes"
+agenda-group "AnalizeDiseases"
+lock-on-active true
+    when
+        $anamnesis: Anamnesis ($symptoms: currentDiagnosis.symptoms)
+        $calc: Number ( doubleValue  == 100.0 ) from accumulate (
+            Symptom(name.equals("Cesto uriniranje") || name.equals("Gubitak telesne tezine") || name.equals("Umor") || name.equals("Mucnina i povracanje")
+            ) from $symptoms,
+            init ( int num = 0; ),
+            action ( num += 1; ),
+            result (((double)num/4)*100.0)
+        )
+        then
+            System.out.println( "AKTIVIRALO SE 6");
+end
+
+function boolean sinusCheck(Anamnesis anamnesis) {
+    for (Diagnosis diagnosis:anamnesis.getDiagnoses()) {
+        boolean cond1 = false;
+        boolean cond2 = false;
+        for (Disease disease:diagnosis.getDiseases()){
+            if (disease.getName().equals("Prehlada")){
+                cond1 = true;
+                break;
+            }
+            if (disease.getName().equals("Groznica")){
+                cond2 = true;
+                break;
+            }
+        }
+        if (diagnosis.getDate().isAfter(LocalDate.now().minusDays(60)) && (cond1 || cond2)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function int hyperCheck(Anamnesis anamnesis) {
+    int num = 0;
+    for (Diagnosis diagnosis:anamnesis.getDiagnoses()) {
+        boolean cond1 = false;
+        for (Symptom symptom:diagnosis.getSymptoms()){
+            if (symptom.getName().equals("Visok krvni pritisak")){
+                cond1 = true;
+                break;
+            }
+        }
+        if (diagnosis.getDate().isAfter(LocalDate.now().minusMonths(6)) && cond1) {
+            num += 1;
+        }
+    }
+    return num;
+}

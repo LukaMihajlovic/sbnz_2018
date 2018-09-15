@@ -1,0 +1,36 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "symptom",
+            "otherEntityName": "symptom",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "disease"
+        },
+        {
+            "relationshipName": "diagnosis",
+            "otherEntityName": "diagnosis",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "disease"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "factor",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180912181023",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "disease",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

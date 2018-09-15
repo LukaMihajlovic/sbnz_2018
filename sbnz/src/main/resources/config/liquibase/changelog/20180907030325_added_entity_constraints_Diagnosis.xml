@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Diagnosis.
+    -->
+    <changeSet id="20180907030325-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="doctor_id"
+                                 baseTableName="diagnosis"
+                                 constraintName="fk_diagnosis_doctor_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="doctor"/>
+
+        <addForeignKeyConstraint baseColumnNames="anamnesis_id"
+                                 baseTableName="diagnosis"
+                                 constraintName="fk_diagnosis_anamnesis_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="anamnesis"/>
+
+        <addForeignKeyConstraint baseColumnNames="diagnoses_id"
+                                 baseTableName="diagnosis_drugs"
+                                 constraintName="fk_diagnosis_drugs_diagnoses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="diagnosis"/>
+        <addForeignKeyConstraint baseColumnNames="drugs_id"
+                                 baseTableName="diagnosis_drugs"
+                                 constraintName="fk_diagnosis_drugs_drugs_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="drug"/>
+        
+        <addForeignKeyConstraint baseColumnNames="diagnoses_id"
+                                 baseTableName="diagnosis_symptoms"
+                                 constraintName="fk_diagnosis_symptoms_diagnoses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="diagnosis"/>
+        <addForeignKeyConstraint baseColumnNames="symptoms_id"
+                                 baseTableName="diagnosis_symptoms"
+                                 constraintName="fk_diagnosis_symptoms_symptoms_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="symptom"/>
+        
+        <addForeignKeyConstraint baseColumnNames="diagnoses_id"
+                                 baseTableName="diagnosis_disease"
+                                 constraintName="fk_diagnosis_disease_diagnoses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="diagnosis"/>
+        <addForeignKeyConstraint baseColumnNames="diseases_id"
+                                 baseTableName="diagnosis_disease"
+                                 constraintName="fk_diagnosis_disease_diseases_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="disease"/>
+        
+    </changeSet>
+</databaseChangeLog>
