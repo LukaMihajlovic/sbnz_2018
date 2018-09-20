@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-jwt.service';
 import { JhiTrackerService } from '../tracker/tracker.service';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class LoginService {
@@ -10,7 +11,8 @@ export class LoginService {
     constructor(
         private principal: Principal,
         private trackerService: JhiTrackerService,
-        private authServerProvider: AuthServerProvider
+        private authServerProvider: AuthServerProvider,
+        private http: HttpClient
     ) {}
 
     login(credentials, callback?) {
@@ -33,6 +35,10 @@ export class LoginService {
 
     loginWithToken(jwt, rememberMe) {
         return this.authServerProvider.loginWithToken(jwt, rememberMe);
+    }
+
+    createSession() {
+        return this.http.get('/api/users/session');
     }
 
     logout() {

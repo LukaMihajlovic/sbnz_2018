@@ -3,6 +3,8 @@ package rs.ac.uns.ftn.sbnz.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 
@@ -36,6 +38,7 @@ public class Disease implements Serializable {
     @JoinTable(name = "disease_symptom",
                joinColumns = @JoinColumn(name="diseases_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="symptoms_id", referencedColumnName="id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Symptom> symptoms = new HashSet<>();
 
     @ManyToMany(mappedBy = "diseases")

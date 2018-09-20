@@ -15,29 +15,7 @@ import java.time.ZoneId;
 global RunService runService;
 
 
-rule "Check if disease is common cold"
-agenda-group "AnalizeDiseases"
-activation-group "FirstGroup"
-lock-on-active true
-salience( $percent )
-    when
-    	$anamnesis: Anamnesis ($symptoms: currentDiagnosis.symptoms)
-    	$percent: Number(doubleValue >= 80) from accumulate (
-    		Symptom(name.equals("Curenje iz nosa") || name.equals("Bol u grlu") || name.equals("Glavobolja") || name.equals("Kijanje") || name.equals("Kasalj")
-    		) from $symptoms,
-    		init ( int num = 0; ),
-    		action ( num += 1; ),
-    		result (((double)num/5)*100)
-    	)
-    then
-
-        System.out.println( "AKTIVIRALO SE 1" );
-        System.out.println($percent);
-
-end
-
-
-rule "Check if disease is fever"
+rule "Groznica"
 agenda-group "AnalizeDiseases"
 activation-group "FirstGroup"
 lock-on-active true
@@ -55,9 +33,32 @@ salience( $percent )
     then
         System.out.println( "AKTIVIRALO SE 2" );
         System.out.println($percent);
+        runService.diagnoseDisease("Groznica",$percent,$anamnesis);
 end
 
-rule "Check if disease is tonsilitis"
+rule "Prehlada"
+agenda-group "AnalizeDiseases"
+activation-group "FirstGroup"
+lock-on-active true
+salience( $percent )
+    when
+    	$anamnesis: Anamnesis ($symptoms: currentDiagnosis.symptoms)
+    	$percent: Number(doubleValue >= 80) from accumulate (
+    		Symptom(name.equals("Curenje iz nosa") || name.equals("Bol u grlu") || name.equals("Glavobolja") || name.equals("Kijanje") || name.equals("Kasalj")
+    		) from $symptoms,
+    		init ( int num = 0; ),
+    		action ( num += 1; ),
+    		result (((double)num/5)*100)
+    	)
+    then
+
+        System.out.println( "AKTIVIRALO SE 1" );
+        System.out.println($percent);
+        runService.diagnoseDisease("Prehlada",$percent,$anamnesis);
+
+end
+
+rule "Upala krajnika"
 agenda-group "AnalizeDiseases"
 activation-group "FirstGroup"
 lock-on-active true
@@ -76,12 +77,13 @@ salience( $percent )
     then
         System.out.println( "AKTIVIRALO SE 3" );
         System.out.println($percent);
+        runService.diagnoseDisease("Upala krajnika",$percent,$anamnesis);
 end
 
 
 
 
-rule "Check if disease is sinus infection"
+rule "Sinusna infekcija"
 agenda-group "AnalizeDiseases"
 activation-group "FirstGroup"
 lock-on-active true
@@ -99,23 +101,25 @@ salience( $percent )
         )
     then
         System.out.println( "AKTIVIRALO SE 4" );
+        runService.diagnoseDisease("Sinusna infekcija",$percent,$anamnesis);
 end
 
 
 
 
-rule "Check if disease is hypertension"
+rule "Hipertenzija"
 agenda-group "AnalizeDiseases"
 lock-on-active true
     when
         $anamnesis: Anamnesis ( hyperCheck($anamnesis) >= 10 )
     then
         System.out.println( "AKTIVIRALO SE 5");
+        runService.diagnoseDisease("Hipertenzija",100,$anamnesis);
 end
 
 
 
-rule "Check if disease is diabetes"
+rule "Dijabetes"
 agenda-group "AnalizeDiseases"
 lock-on-active true
     when
@@ -129,6 +133,7 @@ lock-on-active true
         )
         then
             System.out.println( "AKTIVIRALO SE 6");
+            runService.diagnoseDisease("Dijabetes",$calc,$anamnesis);
 end
 
 function boolean sinusCheck(Anamnesis anamnesis) {

@@ -1,0 +1,34 @@
+package icu;
+
+import rs.ac.uns.ftn.sbnz.domain.icu.HeartbeatEvent;
+import rs.ac.uns.ftn.sbnz.domain.icu.FastHeartbeatEvent;
+import rs.ac.uns.ftn.sbnz.domain.icu.PatientMonitoring;
+import rs.ac.uns.ftn.sbnz.service.RunService
+import java.util.Date;
+
+global RunService runService;
+
+
+// ==================== H E A R T  R A T E  P R O B L E M =====================
+
+
+
+rule "Ubrzan rad srca"
+
+    when
+        $pm: PatientMonitoring( )
+        $total: Number (intValue > 25) from accumulate ($h: HeartbeatEvent( patientId == $pm.id
+        		) over window:time(10s),
+                	init(int matched = 0;)
+                	action(matched+=1;)
+                	result(matched)
+                )
+    then
+        System.out.println("----------------------------------------------------");
+        System.out.println("UBRZAN RAD SRCA");
+        System.out.println("----------------------------------------------------");
+        System.out.println("Broj otkucaja u poslednjih 10s: " + $total);
+        System.out.println("----------------------------------------------------");
+        insert(new FastHeartbeatEvent($pm.id));
+        //runService.sendMessage("Total heartbeats in 10s: " + $total, new Date(), $p.id, "Rapid heart rate - Tachycardia");
+end

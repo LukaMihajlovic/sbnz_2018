@@ -1,7 +1,12 @@
 package rs.ac.uns.ftn.sbnz.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.beans.factory.annotation.Autowired;
+import rs.ac.uns.ftn.sbnz.domain.AllergiesToClient;
+import rs.ac.uns.ftn.sbnz.domain.Anamnesis;
 import rs.ac.uns.ftn.sbnz.domain.Drug;
+import rs.ac.uns.ftn.sbnz.domain.DrugsContent;
+import rs.ac.uns.ftn.sbnz.service.AnamnesisService;
 import rs.ac.uns.ftn.sbnz.service.DrugService;
 import rs.ac.uns.ftn.sbnz.web.rest.errors.BadRequestAlertException;
 import rs.ac.uns.ftn.sbnz.web.rest.util.HeaderUtil;
@@ -30,6 +35,9 @@ public class DrugResource {
 
     private final DrugService drugService;
 
+    @Autowired
+    private AnamnesisService anamnesisService;
+
     public DrugResource(DrugService drugService) {
         this.drugService = drugService;
     }
@@ -52,6 +60,15 @@ public class DrugResource {
         return ResponseEntity.created(new URI("/api/drugs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @PostMapping("/drugs/validate")
+    @Timed
+    public AllergiesToClient validatePrescription(@RequestBody DrugsContent dc) {
+        log.debug("REST request to validate prescription");
+        Anamnesis anamnesis = anamnesisService.findOne(dc.getId());
+
+        return drugService.validateDrugs(anamnesis, dc);
     }
 
     /**

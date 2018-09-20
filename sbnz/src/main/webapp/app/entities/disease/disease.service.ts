@@ -15,6 +15,14 @@ export class DiseaseService {
 
     constructor(private http: HttpClient) { }
 
+
+    findDisease(symps) {
+        return this.http.put(this.resourceUrl + `-symptoms`, symps);
+    }
+    findSymptomsForCondition(conditionName: any) {
+        return this.http.get(this.resourceUrl + `-symptoms/${conditionName}`);
+    }
+
     create(disease: Disease): Observable<EntityResponseType> {
         const copy = this.convert(disease);
         return this.http.post<Disease>(this.resourceUrl, copy, { observe: 'response' })

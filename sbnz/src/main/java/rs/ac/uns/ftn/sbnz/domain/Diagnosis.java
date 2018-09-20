@@ -1,7 +1,11 @@
 package rs.ac.uns.ftn.sbnz.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 
@@ -32,9 +36,13 @@ public class Diagnosis implements Serializable {
     private Boolean recovery;
 
     @ManyToOne
+    @JsonIgnoreProperties("diagnoses")
+    @JsonIgnore
     private Doctor doctor;
 
     @ManyToOne
+    @JsonIgnoreProperties("diagnoses")
+    @JsonIgnore
     private Anamnesis anamnesis;
 
     @ManyToMany
@@ -49,6 +57,7 @@ public class Diagnosis implements Serializable {
     @JoinTable(name = "diagnosis_symptoms",
                joinColumns = @JoinColumn(name="diagnoses_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="symptoms_id", referencedColumnName="id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Symptom> symptoms = new HashSet<>();
 
     @ManyToMany
@@ -56,6 +65,7 @@ public class Diagnosis implements Serializable {
     @JoinTable(name = "diagnosis_disease",
                joinColumns = @JoinColumn(name="diagnoses_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="diseases_id", referencedColumnName="id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Disease> diseases = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

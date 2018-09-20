@@ -101,4 +101,9 @@ public class SbnzApp {
     public HashMap<String, KieSession> kieSessions() {
         return new HashMap<>();
     }
+
+    @Bean
+    public HashMap<String, String> kie() {
+        return new HashMap<>();
+    }
 }

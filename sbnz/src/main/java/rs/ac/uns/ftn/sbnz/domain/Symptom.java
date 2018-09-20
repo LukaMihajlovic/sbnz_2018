@@ -35,7 +35,7 @@ public class Symptom implements Serializable {
     private Float high;
 
     @Column(name = "spec")
-    private Boolean spec;
+    public Boolean spec;
 
     @ManyToMany(mappedBy = "symptoms")
     @JsonIgnore

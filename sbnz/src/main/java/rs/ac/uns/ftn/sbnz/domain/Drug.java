@@ -35,7 +35,6 @@ public class Drug implements Serializable {
     private DrugType type;
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "drug_ingredient",
                joinColumns = @JoinColumn(name="drugs_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="ingredients_id", referencedColumnName="id"))
@@ -43,8 +42,8 @@ public class Drug implements Serializable {
 
     @ManyToMany(mappedBy = "allergiesDrugs")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Anamnesis> anamneses = new HashSet<>();
+
 
     @ManyToMany(mappedBy = "drugs")
     @JsonIgnore

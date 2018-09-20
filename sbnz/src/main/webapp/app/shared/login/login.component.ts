@@ -68,6 +68,8 @@ export class JhiLoginModalComponent implements AfterViewInit {
                 this.stateStorageService.storeUrl(null);
                 this.router.navigate([redirect]);
             }
+
+            this.loginService.createSession().subscribe(res => console.log('eto ga'));
         }).catch(() => {
             this.authenticationError = true;
         });

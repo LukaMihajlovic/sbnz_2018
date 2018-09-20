@@ -1,0 +1,38 @@
+package icu;
+
+import rs.ac.uns.ftn.sbnz.domain.icu.UrgentDialysisEvent;
+import rs.ac.uns.ftn.sbnz.domain.icu.PatientMonitoring;
+import rs.ac.uns.ftn.sbnz.domain.icu.UrinationEvent;
+import rs.ac.uns.ftn.sbnz.domain.icu.HeartbeatEvent;
+
+
+// ==================== U R G E N T  D I A L Y S I S  P R O B L E M =====================
+
+declare window Urinations
+    UrinationEvent() over window:time ( 12h )
+end
+
+declare window Heartbeats
+    HeartbeatEvent() over window:time ( 10s )
+end
+
+rule "Hitno potrebna dijaliza"
+    when
+        $pm: PatientMonitoring( diseases contains "Hronicna bubrezna bolest" )
+        $total: Number( intValue > 10 ) from accumulate (
+            $h: HeartbeatEvent(patientId == $pm.id) from window Heartbeats,
+            count( 1 )
+        )
+        $amount: Number( intValue < 100 ) from accumulate (
+            $u: UrinationEvent( patientId == $pm.id ) from window Urinations,
+            sum( $u.amount )
+        )
+    then
+        System.out.println("----------------------------------------------------");
+        System.out.println("HITNA DIJALIZA");
+        System.out.println("----------------------------------------------------");
+        System.out.println("Broj otkucaja u poslednjih 10s: " + $total);
+        System.out.println("Kolicina mokrenja u poslednjih 12h: " + $amount);
+        System.out.println("----------------------------------------------------");
+        insert(new UrgentDialysisEvent($pm.id));
+end

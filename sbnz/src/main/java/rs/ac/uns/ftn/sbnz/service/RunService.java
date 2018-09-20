@@ -4,6 +4,8 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.sbnz.domain.Anamnesis;
+import rs.ac.uns.ftn.sbnz.domain.Diagnosis;
+import rs.ac.uns.ftn.sbnz.domain.Disease;
 import rs.ac.uns.ftn.sbnz.security.SecurityUtils;
 import java.util.HashMap;
 import java.util.Optional;
@@ -23,6 +27,15 @@ public class RunService implements ApplicationEventPublisherAware {
 
     @Autowired
     private HashMap<String, KieSession> kieSessions;
+
+    @Autowired
+    private DiagnosisService diagnosisService;
+
+    @Autowired
+    private AnamnesisService anamnesisService;
+
+    @Autowired
+    private DiseaseService diseaseService;
 
     private ApplicationEventPublisher publisher;
 
@@ -42,8 +55,29 @@ public class RunService implements ApplicationEventPublisherAware {
         kieSession.delete(factHandle);
     }
 
-    public void diagnoseDisease(String diseaseName,double percent, Anamnesis anamnesis){
+    public void diagnoseDisease(String diseaseName,Number percent, Anamnesis anamnesis){
+        Disease disease = diseaseService.findByName(diseaseName);
+        //disease.setName(diseaseName);
+        int factor = (int)(percent.doubleValue() + 0.5d);
+        disease.setFactor(factor);
+        Diagnosis d = anamnesis.getCurrentDiagnosis();
+        d.getDiseases().clear();
+        d.getDiseases().add(disease);
+        diagnosisService.save(d);
+        anamnesisService.save(anamnesis);
+    }
 
+    public void clearSession() {
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        if (!userLogin.isPresent())
+            return;
+        KieSession kieSession = kieSessions.get(userLogin.get());
+        QueryResults queryResults = kieSession.getQueryResults("Get all Anamnesis facts");
+        for (QueryResultsRow queryResult: queryResults) {
+            Anamnesis a = (Anamnesis)queryResult.get("$anamnesis");
+            System.out.println(a);
+            kieSession.delete(kieSession.getFactHandle(a));
+        }
     }
 
 

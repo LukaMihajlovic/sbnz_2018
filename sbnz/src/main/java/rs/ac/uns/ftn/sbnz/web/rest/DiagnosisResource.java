@@ -81,6 +81,22 @@ public class DiagnosisResource {
     @Timed
     public ResponseEntity<Diagnosis> updateDiagnosis(@RequestBody Diagnosis diagnosis) throws URISyntaxException {
         log.debug("REST request to update Diagnosis : {}", diagnosis);
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+
         if (diagnosis.getId() == null) {
             return createDiagnosis(diagnosis);
         }
@@ -130,17 +146,18 @@ public class DiagnosisResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @PutMapping("/diagnoses/current")
+    @PutMapping("/diagnoses/current/{anamnesisId}")
     @Timed
-    public ResponseEntity<Anamnesis> findDisease(@Valid @RequestBody Diagnosis diagnosis) {
+    public ResponseEntity<Anamnesis> findDisease(@Valid @RequestBody Diagnosis diagnosis, @PathVariable Long anamnesisId) {
 
         Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Anamnesis anamnesis = anamnesisService.findOne(anamnesisId);
+        diagnosis.setAnamnesis(anamnesis);
         Doctor dr = doctorService.findOneByUserLogin(userLogin.get());
         diagnosis.setDate(LocalDate.now());
         diagnosis.setDoctor(dr);
         diagnosisService.save(diagnosis);
 
-        Anamnesis anamnesis = diagnosis.getAnamnesis();
         anamnesis.setCurrentDiagnosis(diagnosis);
         anamnesisService.save(anamnesis);
         anamnesis.setDiagnoses(diagnosisService.findAllWithEagerRelationshipsByAnamnesisId(anamnesis.getId()));
@@ -149,6 +166,17 @@ public class DiagnosisResource {
         anamnesisService.save(anamnesis);
 
 
-        return ResponseEntity.ok().body(new Anamnesis());
+        return ResponseEntity.ok().body(anamnesis);
+    }
+
+    @PutMapping("/diagnoses/finish")
+    @Timed
+    public ResponseEntity finish(@Valid @RequestBody Diagnosis diagnosis) throws URISyntaxException {
+
+        Diagnosis d = diagnosisService.findOne(diagnosis.getId());
+        d.setDrugs(diagnosis.getDrugs());
+        diagnosisService.save(d);
+
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, diagnosis.getId().toString())).body(d);
     }
 }

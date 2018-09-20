@@ -15,6 +15,11 @@ export class DrugService {
 
     constructor(private http: HttpClient) { }
 
+    validateDrugs(drugContent): Observable<HttpResponse<any>> {
+        return this.http
+            .post<any>(this.resourceUrl + '/validate', drugContent, { observe: 'response' });
+    }
+
     create(drug: Drug): Observable<EntityResponseType> {
         const copy = this.convert(drug);
         return this.http.post<Drug>(this.resourceUrl, copy, { observe: 'response' })

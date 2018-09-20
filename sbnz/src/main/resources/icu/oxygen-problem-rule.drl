@@ -1,0 +1,96 @@
+package icu;
+
+import rs.ac.uns.ftn.sbnz.domain.icu.OxygenMeasureEvent;
+import rs.ac.uns.ftn.sbnz.domain.icu.OxygenLevelRaisedEvent;
+import rs.ac.uns.ftn.sbnz.domain.icu.OxygenProblemEvent;
+import rs.ac.uns.ftn.sbnz.domain.icu.PatientMonitoring;
+
+// ==================== O X Y G E N  P R O B L E M =====================
+
+/*rule "Oxygen level in blood less than 70mmHg!"
+	agenda-group "monitoring"
+    when
+        $p: PatientMonitoring( )
+    	$oxygen: OxygenMeasureEvent( patientId == $p.id, $amount: level, $time: time, $amount < 70 )
+
+        OxygenMeasureEvent(
+            (patientId == $p.id && this != $oxygen && level < $amount && time > $time)
+        ) over window:time(15m)
+
+    then
+    	System.out.println("triggered!");
+		insert(new OxygenProblemEvent($p.id));
+
+end*/
+
+
+rule "Blood oxygen level raised"
+    when
+        $e1: OxygenMeasureEvent ( )
+        $e2: OxygenMeasureEvent (this after [3s, 7s] $e1,level > $e1.level,patientId == $e1.patientId )
+
+
+    then
+        System.out.println("----------------------------------------------------");
+        System.out.println("NIVO KISEONIKA SE PODIGAO");
+        System.out.println("----------------------------------------------------");
+        System.out.println($e1);
+        System.out.println($e2);
+        insert(new OxygenLevelRaisedEvent($e1.patientId));
+        System.out.println();
+end
+
+rule "Problem sa kiseonikom"
+    when
+        $p: PatientMonitoring( )
+        $count: Number( intValue != 0 ) from accumulate (
+            $raised: OxygenLevelRaisedEvent( patientId == $p.id ) over window:time (15m),
+            init(int matched = 0; System.out.println("bbbb");)
+            action(matched+=1; System.out.println("bb");)
+            result(matched)
+        )
+    then
+        System.out.println("----------------------------------------------------");
+        System.out.println("PROBLEM SA KISEONIKOM");
+        System.out.println("----------------------------------------------------");
+        insert(new OxygenProblemEvent($p.id));
+end
+
+
+
+rule "Oxygen problem"
+agenda-group "Intensive Care"
+    when
+        $p: PatientMonitoring( )
+        $e1: OxygenMeasureEvent ( level < 70, patientId == $p.id ) over window:length (1)
+        $count: Number( intValue == 0 ) from accumulate (
+            $raised: OxygenLevelRaisedEvent( patientId == $p.id ) over window:time (15m), count($raised)
+        )
+    then
+        System.out.println("----------------------------------------------------");
+        System.out.println("PROBLEM SA KISEONIKOM");
+        System.out.println("----------------------------------------------------");
+        insert(new OxygenProblemEvent($p.id));
+end
+
+rule "Meri"
+agenda-group "Intensive Care"
+    when
+        $e1: OxygenMeasureEvent ( )
+        $e2: OxygenMeasureEvent( this after [3s, 7s] $e1, level > $e1.level, patientId == $e1.patientId )
+    then
+        System.out.println("----------------------------------------------------");
+        System.out.println("NIVO KISEONIKA SE PODIGAO");
+        System.out.println("----------------------------------------------------");
+        System.out.println($e1);
+        System.out.println($e2);
+        insert(new OxygenLevelRaisedEvent($e1.patientId));
+        System.out.println();
+end
+
+
+
+
+
+
+

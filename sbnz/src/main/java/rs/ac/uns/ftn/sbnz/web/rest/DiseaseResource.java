@@ -2,6 +2,9 @@ package rs.ac.uns.ftn.sbnz.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import rs.ac.uns.ftn.sbnz.domain.Disease;
+import rs.ac.uns.ftn.sbnz.domain.SFToClient;
+import rs.ac.uns.ftn.sbnz.domain.Symptom;
+import rs.ac.uns.ftn.sbnz.domain.SymptomFinder;
 import rs.ac.uns.ftn.sbnz.service.DiseaseService;
 import rs.ac.uns.ftn.sbnz.web.rest.errors.BadRequestAlertException;
 import rs.ac.uns.ftn.sbnz.web.rest.util.HeaderUtil;
@@ -101,6 +104,22 @@ public class DiseaseResource {
         Disease disease = diseaseService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(disease));
     }
+
+
+    @PutMapping("/diseases-symptoms")
+    @Timed
+    public List<SFToClient> findDiseases(@RequestBody SymptomFinder sf) {
+        List<SFToClient> retVal = diseaseService.findDiseaseGivenSymptoms(sf);
+        return retVal;
+    }
+
+    @GetMapping("/diseases-symptoms/{diseaseName}")
+    @Timed
+    public List<Symptom> findSymptoms(@PathVariable String diseaseName) {
+        log.debug("REST request to find symptoms for medical condition");
+        return diseaseService.findSymptomsFromGivenDisease(diseaseName);
+    }
+
 
     /**
      * DELETE  /diseases/:id : delete the "id" disease.

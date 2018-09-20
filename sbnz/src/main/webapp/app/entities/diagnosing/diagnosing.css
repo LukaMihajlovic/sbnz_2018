@@ -1,3 +1,26 @@
 .run {
     margin-top: 20px;
 }
+
+.result {
+    margin-top: 30px;
+    background-color: #ccff33;
+    font-size: 25px;
+}
+
+#Acolor {
+    background-color: #ccff33;
+    margin-top: 20px;
+}
+
+#finish{
+    width: 100%;
+}
+
+#tab {
+    background-color: #ffffff;
+}
+
+#AllS {
+    font-size: 20px;
+}

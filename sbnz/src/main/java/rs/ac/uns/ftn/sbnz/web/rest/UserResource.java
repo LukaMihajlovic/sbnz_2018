@@ -107,6 +107,15 @@ public class UserResource {
         }
     }
 
+    @Secured(AuthoritiesConstants.USER)
+    @GetMapping("/users/session")
+    @Timed
+    public ResponseEntity<?> createKieSession() {
+        userService.createKieSession();
+        userService.fillKieSession();
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
     /**
      * PUT /users : Updates an existing User.
      *

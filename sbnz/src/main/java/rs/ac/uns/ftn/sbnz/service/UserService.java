@@ -1,8 +1,11 @@
 package rs.ac.uns.ftn.sbnz.service;
 
+import org.drools.core.ClassObjectFilter;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import rs.ac.uns.ftn.sbnz.config.CacheConfiguration;
-import rs.ac.uns.ftn.sbnz.domain.Authority;
-import rs.ac.uns.ftn.sbnz.domain.User;
+import rs.ac.uns.ftn.sbnz.domain.*;
 import rs.ac.uns.ftn.sbnz.repository.AuthorityRepository;
 import rs.ac.uns.ftn.sbnz.config.Constants;
 import rs.ac.uns.ftn.sbnz.repository.UserRepository;
@@ -42,6 +45,28 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
+
+    @Autowired
+    private DiseaseService diseaseService;
+
+    @Autowired
+    private SymptomService symptomService;
+
+    @Autowired
+    private DrugService drugService;
+
+    @Autowired
+    private IngredientService ingredientService;
+
+
+    @Autowired
+    private HashMap<String, KieSession> kieSessions;
+
+    @Autowired
+    private HashMap<String, String> kie;
+
+    @Autowired
+    private KieContainer kieContainer;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
@@ -257,6 +282,44 @@ public class UserService {
             cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(user.getLogin());
             cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).evict(user.getEmail());
         }
+    }
+
+    public void createKieSession() {
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+
+        if (userLogin.isPresent() && !kieSessions.containsKey(userLogin.get()))
+            kieSessions.put(userLogin.get(), kieContainer.newKieSession());
+
+
+        log.info("Creating KieSession for user: " + userLogin.get());
+    }
+
+    public void fillKieSession() {
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+
+        if (!userLogin.isPresent() && !kieSessions.containsKey(userLogin.get()))
+            return;
+
+        KieSession kieSession = kieSessions.get(userLogin.get());
+
+        Collection<?> facts = kieSession.getObjects(new ClassObjectFilter(Object.class));
+
+        if (facts.size() > 0)
+            return;
+
+        List<Disease> diseases = diseaseService.findAll();
+        diseases.stream().forEach(mc -> kieSession.insert(mc));
+
+        List<Symptom> symptoms = symptomService.findAll();
+        symptoms.stream().forEach(s -> kieSession.insert(s));
+
+        List<Drug> medication = drugService.findAll();
+        medication.stream().forEach(m -> kieSession.insert(m));
+
+        List<Ingredient> ingredients = ingredientService.findAll();
+        ingredients.stream().forEach(i -> kieSession.insert(i));
+
+        log.info("Loading entities into kie session");
     }
 
     /**

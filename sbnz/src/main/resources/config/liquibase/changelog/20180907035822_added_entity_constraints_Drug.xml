@@ -7,7 +7,7 @@
         Added the constraints for entity Drug.
     -->
     <changeSet id="20180907035822-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="drugs_id"
                                  baseTableName="drug_ingredient"
                                  constraintName="fk_drug_ingredient_drugs_id"
@@ -18,6 +18,12 @@
                                  constraintName="fk_drug_ingredient_ingredients_id"
                                  referencedColumnNames="id"
                                  referencedTableName="ingredient"/>
-        
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/drug_ingredient.csv"
+                  separator=";"
+                  tableName="drug_ingredient">
+        </loadData>
+
     </changeSet>
 </databaseChangeLog>

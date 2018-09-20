@@ -972,7 +972,7 @@
         </profile>
         <profile>
             <!--
-                Profile for monitoring the application with Graphite.
+                Profile for icu the application with Graphite.
             -->
             <id>graphite</id>
             <dependencies>
@@ -984,7 +984,7 @@
         </profile>
         <profile>
             <!--
-                Profile for monitoring the application with Prometheus.
+                Profile for icu the application with Prometheus.
             -->
             <id>prometheus</id>
             <dependencies>

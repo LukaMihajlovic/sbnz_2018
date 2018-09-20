@@ -3,6 +3,8 @@ package rs.ac.uns.ftn.sbnz.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 
@@ -31,6 +33,7 @@ public class Anamnesis implements Serializable {
     @OneToMany(mappedBy = "anamnesis")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Diagnosis> diagnoses = new HashSet<>();
 
     @OneToOne
@@ -38,18 +41,17 @@ public class Anamnesis implements Serializable {
     private Diagnosis currentDiagnosis;
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "anamnesis_allergies_ingredient",
                joinColumns = @JoinColumn(name="anamneses_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="allergies_ingredients_id", referencedColumnName="id"))
     private Set<Ingredient> allergiesIngredients = new HashSet<>();
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "anamnesis_allergies_drugs",
                joinColumns = @JoinColumn(name="anamneses_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="allergies_drugs_id", referencedColumnName="id"))
     private Set<Drug> allergiesDrugs = new HashSet<>();
+
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

@@ -1,0 +1,101 @@
+package rules;
+
+import java.lang.String;
+import java.util.List;
+import java.util.ArrayList;
+
+import rs.ac.uns.ftn.sbnz.domain.Anamnesis;
+import rs.ac.uns.ftn.sbnz.domain.Symptom;
+import rs.ac.uns.ftn.sbnz.domain.Drug;
+import rs.ac.uns.ftn.sbnz.domain.Ingredient;
+import rs.ac.uns.ftn.sbnz.domain.Disease;
+import rs.ac.uns.ftn.sbnz.domain.DrugsContent;
+
+import rs.ac.uns.ftn.sbnz.domain.SymptomFinder;
+
+query "Nadji simptome"(String $disName)
+    $disease: Disease(name == $disName, $symptoms : symptoms)
+    $addedSpecific: List() from accumulate (
+        $s: Symptom(
+            spec == true
+        ) from $symptoms,
+        init ( List<Symptom> symptoms = new ArrayList<Symptom>(); ),
+        action ( symptoms.add($s); ),
+        reverse ( symptoms.remove($s); ),
+        result ( symptoms )
+    )
+    $sortedSymptoms: List() from accumulate (
+        $s: Symptom(
+            spec == false
+        ) from $symptoms,
+        init ( ),
+        action ( $addedSpecific.add($s); ),
+        reverse ( $addedSpecific.remove($s); ),
+        result ( $addedSpecific )
+    )
+end
+
+/*query "get Symptoms" (String conditionName)
+        $mc: Disease(name == conditionName, $symptoms : symptoms)
+
+		accumulate (
+			$s: Symptom() from $symptoms,
+			listOfBasicSymptoms: collectList( $s )
+		)
+
+end*/
+
+query "Get Symptoms"
+    $s: Symptom()
+end
+
+
+query findDisease(SymptomFinder $sf, Symptom $s)
+    $contained: Number( intValue > 0) from accumulate (
+        $found: Symptom(
+            name.equals($s.name)
+        ) from $sf.symptoms,
+        count($found)
+    )
+end
+
+query "Nadji bolesti"(SymptomFinder $sf)
+    $disease: Disease($symptoms : symptoms)
+    $counter: Number( intValue > 0 ) from accumulate (
+        $s: Symptom() from $symptoms and findDisease($sf:$sf, $s:$s),
+        init ( int matched = 0; ),
+        action ( matched += 1; ),
+        result ( matched )
+    )
+end
+
+query "Provera alergije"(Long $anamnesisId)
+    $a: Anamnesis(id == $anamnesisId, $ingredientAllergies : allergiesIngredients, $drugAllergies : allergiesDrugs)
+    $dp: DrugsContent(id == $anamnesisId, $enteredDrugs : drugs)
+    $enteredIngredients: List() from accumulate (
+            $m: Drug() from $enteredDrugs,
+            init ( List<Ingredient> ingredients = new ArrayList<Ingredient>(); ),
+            action ( ingredients.addAll($m.getIngredients()); ),
+            result ( ingredients )
+        )
+    $drugsAll: List() from accumulate (
+        $d: Drug(
+            $drugAllergies.contains($d)
+        ) from $enteredDrugs,
+        init ( List<Drug> drugs = new ArrayList<Drug>(); ),
+        action ( drugs.add($d); ),
+        reverse ( drugs.remove($d); ),
+        result ( drugs )
+    )
+    $ingredientsAll: List() from accumulate (
+        $i: Ingredient(
+            $ingredientAllergies.contains($i)
+        ) from $ingredientAllergies,
+        init ( List<Ingredient> ingredients = new ArrayList<Ingredient>(); ),
+        action ( ingredients.add($i); ),
+        reverse ( ingredients.remove($i); ),
+        result ( ingredients )
+    )
+end
+
+

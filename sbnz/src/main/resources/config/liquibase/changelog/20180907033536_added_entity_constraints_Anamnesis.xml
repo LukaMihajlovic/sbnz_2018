@@ -7,7 +7,7 @@
         Added the constraints for entity Anamnesis.
     -->
     <changeSet id="20180907033536-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="current_diagnosis_id"
                                  baseTableName="anamnesis"
                                  constraintName="fk_anamnesis_current_diagnosis_id"
@@ -24,7 +24,7 @@
                                  constraintName="fk_anamnesis_allergies_ingredient_allergies_ingredients_id"
                                  referencedColumnNames="id"
                                  referencedTableName="ingredient"/>
-        
+
         <addForeignKeyConstraint baseColumnNames="anamneses_id"
                                  baseTableName="anamnesis_allergies_drugs"
                                  constraintName="fk_anamnesis_allergies_drugs_anamneses_id"
@@ -35,6 +35,18 @@
                                  constraintName="fk_anamnesis_allergies_drugs_allergies_drugs_id"
                                  referencedColumnNames="id"
                                  referencedTableName="drug"/>
-        
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/anamnesis_allergies_drugs.csv"
+                  separator=";"
+                  tableName="anamnesis_allergies_drugs">
+        </loadData>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/anamnesis_allergies_ingredient.csv"
+                  separator=";"
+                  tableName="anamnesis_allergies_ingredient">
+        </loadData>
+
     </changeSet>
 </databaseChangeLog>

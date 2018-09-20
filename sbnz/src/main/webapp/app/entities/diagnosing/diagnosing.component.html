@@ -11,14 +11,88 @@
                 <label class="run" for="simptom">Simptomi:</label>
                 <input id="simptom" type="text" class="form-control" [(ngModel)]="symptom" [ngbTypeahead]="search"
                        [resultTemplate]="rt" [inputFormatter]="formatMatches" [resultFormatter]="formatMatches"   />
-                <button class="btn btn-primary" (click)="enterSymptom()">
-                    <span>Dodaj</span>
-                </button>
+
             </div>
             <div class="run">
-                <button class="btn btn-success" (click)="run()">
-                    <span>Pronadji bolest</span>
+                <div class="btn-group">
+                    <button class="btn btn-primary" (click)="enterSymptom()">
+                        <span>Dodaj simptom</span>
+                    </button>
+                    <button class="btn btn-success" (click)="run()">
+                        <span>Pronadji bolest</span>
+                    </button>
+                    <button *ngIf="enteredSymptoms.length !== 0" class="btn btn-primary" (click)="findAllDiseases()">
+                        <span>Sve povezane bolesti</span>
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="pok">
+                <div *ngFor="let s of retAnamnesis.currentDiagnosis.diseases; let i = index">
+                    <p class="result">
+                        Dijagnostifikovana {{ s.name }} sa verovatnocom od {{s.factor}} %.
+                    </p>
+                </div>
+
+                <div>
+                    <label class="run" for="karton">Naziv leka:</label>
+                    <div class="input-group">
+                        <input id="drug" type="text" class="form-control" [(ngModel)]="drug" [ngbTypeahead]="searchDrug"
+                               [resultTemplate]="rt" [inputFormatter]="formatMatches" [resultFormatter]="formatMatches" />
+
+                        <button class="btn btn-primary" (click)="enterDrug()">
+                            <span>Dodaj lek</span>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="container">
+                    <h4>
+                        <span>Lekovi</span>
+                    </h4>
+                    <div class="row">
+                        <table class="table table-striped">
+                            <thead>
+                                <th>Lek</th>
+                                <th>Tip</th>
+                                <th>Sastojci</th>
+                                <th>
+                                    <button class="btn btn-primary" (click)="validateDrugs()">
+                                        <span>Proveri alergije</span>
+                                    </button>
+                                </th>
+                            </thead>
+                            <tbody>
+
+                            <tr *ngFor="let d of enteredDrugs; let i = index">
+                                <td>
+                                    <p [ngStyle]="{'background-color': validate && !drugOk(d) ? 'red' : 'green' }">{{d.name}}
+                                    </p>
+                                </td>
+                                <td>{{ d.type}}</td>
+                                <td>
+                                    <p *ngFor="let ingredient of d.ingredients"
+                                       [ngStyle]="{'background-color': validate && !ingredientOk(ingredient) ? 'red' : 'green' }">
+                                    {{ ingredient.name }}
+                                    </p>
+                                </td>
+
+                                <td>
+                                    <button class="btn btn-primary" (click)="removeFromEnteredDrugs(d.name)">
+                                        <span>x</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <button id='finish' class="btn btn-primary" (click)="finishDiagnose()">
+                    <span>Potvrdi dijagnozu</span>
                 </button>
+
             </div>
         </div>
 
@@ -46,6 +120,60 @@
                     </table>
                 </div>
             </div>
+
+            <div *ngIf="pok1" class="container">
+                <h4>
+                    <span>Sve bolesti povezane sa simptomima</span>
+                </h4>
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                        <th>Bolest</th>
+                        <th>Broj simptoma</th>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let d of findDiseases; let i = index">
+                            <td>{{ d.disease.name }}</td>
+                            <td>{{d.count}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id ="Acolor" class = "row">
+        <div class="col-6">
+            <div>
+                <h4>
+                    <span>Pronadji sve simptome zadate bolesti</span>
+                </h4>
+                <label class="run" for="karton">Bolest:</label>
+                <input id="dis" type="text" class="form-control" [(ngModel)]="disease" [ngbTypeahead]="searchDisease"
+                       [resultTemplate]="rt" [inputFormatter]="formatMatches" [resultFormatter]="formatMatches"   />
+                <button class="btn btn-primary" (click)="findSymptoms()">
+                    <span>Nadji simptome</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div  class="container">
+                <h4>
+                    <span>Simptomi</span>
+                </h4>
+                <div class="row">
+                    <table class="table table-striped">
+                        <tbody id ="tab">
+                        <tr *ngFor="let s of foundedSymptoms; let i = index">
+                            <td>{{ s.name }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

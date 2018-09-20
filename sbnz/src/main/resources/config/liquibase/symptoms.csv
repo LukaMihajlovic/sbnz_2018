@@ -27,3 +27,4 @@ id;name;low;high;spec
 25;U poslednjih 14 dana dijagnostikovana bolest koja kao simptom ima povišenu telesnu temperaturu;0;0;true
 26;U poslednjih 21 dana dijagnostikovana bolest za koju je primao antibiotike;0;0;true
 27;Visok krvni pritisak;0;0;false
+28;Dijareja;0;0;false

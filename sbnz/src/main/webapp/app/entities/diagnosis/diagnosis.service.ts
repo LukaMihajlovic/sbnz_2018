@@ -17,6 +17,12 @@ export class DiagnosisService {
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
+    finish(diagnosis: Diagnosis): Observable<any> {
+        return this.http.put<Diagnosis>(this.resourceUrl + '/finish', diagnosis, {
+            observe: 'response'
+        });
+    }
+
     create(diagnosis: Diagnosis): Observable<EntityResponseType> {
         const copy = this.convert(diagnosis);
         return this.http.post<Diagnosis>(this.resourceUrl, copy, { observe: 'response' })
@@ -78,8 +84,8 @@ export class DiagnosisService {
         return copy;
     }
 
-    currentDiagnosis(diagnosis: Diagnosis): Observable<any> {
-        let path = this.resourceUrl + '/current'
+    currentDiagnosis(diagnosis: Diagnosis,anamnesisId): Observable<any> {
+        let path = this.resourceUrl + '/current/' + anamnesisId;
         return this.http.put<Diagnosis>(path, diagnosis, {
             observe: 'response'
         });
