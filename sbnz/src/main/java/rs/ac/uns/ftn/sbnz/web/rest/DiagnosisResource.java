@@ -19,8 +19,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Diagnosis.
@@ -169,6 +172,13 @@ public class DiagnosisResource {
         return ResponseEntity.ok().body(anamnesis);
     }
 
+    @GetMapping("/diagnoses/reports-chronic")
+    @Timed
+    public HashSet<Patient> getChronicReport() {
+
+        return diagnosisService.getChronicReport();
+    }
+
     @PutMapping("/diagnoses/finish")
     @Timed
     public ResponseEntity finish(@Valid @RequestBody Diagnosis diagnosis) throws URISyntaxException {
@@ -178,5 +188,20 @@ public class DiagnosisResource {
         diagnosisService.save(d);
 
         return ResponseEntity.ok().headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, diagnosis.getId().toString())).body(d);
+    }
+
+    @GetMapping("/diagnoses/reports-addict")
+    @Timed
+    public HashSet<Patient> getAddictReport() {
+        return diagnosisService.getAddictReport();
+
+
+    }
+
+
+    @GetMapping("/diagnoses/reports-imun")
+    @Timed
+    public HashSet<Patient> getImunReport() {
+        return diagnosisService.getImunReport();
     }
 }

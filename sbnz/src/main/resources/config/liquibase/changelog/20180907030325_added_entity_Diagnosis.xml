@@ -40,7 +40,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="diagnosis_drugs">
             <column name="drugs_id" type="bigint">
                 <constraints nullable="false"/>
@@ -51,7 +51,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="diagnoses_id, drugs_id" tableName="diagnosis_drugs"/>
-        
+
         <createTable tableName="diagnosis_symptoms">
             <column name="symptoms_id" type="bigint">
                 <constraints nullable="false"/>
@@ -62,7 +62,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="diagnoses_id, symptoms_id" tableName="diagnosis_symptoms"/>
-        
+
         <createTable tableName="diagnosis_disease">
             <column name="diseases_id" type="bigint">
                 <constraints nullable="false"/>
@@ -73,7 +73,13 @@
         </createTable>
 
         <addPrimaryKey columnNames="diagnoses_id, diseases_id" tableName="diagnosis_disease"/>
-        
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/diagnoses.csv"
+                  separator=";"
+                  tableName="diagnosis">
+        </loadData>
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -7,7 +7,7 @@
         Added the constraints for entity Diagnosis.
     -->
     <changeSet id="20180907030325-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="doctor_id"
                                  baseTableName="diagnosis"
                                  constraintName="fk_diagnosis_doctor_id"
@@ -30,7 +30,7 @@
                                  constraintName="fk_diagnosis_drugs_drugs_id"
                                  referencedColumnNames="id"
                                  referencedTableName="drug"/>
-        
+
         <addForeignKeyConstraint baseColumnNames="diagnoses_id"
                                  baseTableName="diagnosis_symptoms"
                                  constraintName="fk_diagnosis_symptoms_diagnoses_id"
@@ -41,7 +41,7 @@
                                  constraintName="fk_diagnosis_symptoms_symptoms_id"
                                  referencedColumnNames="id"
                                  referencedTableName="symptom"/>
-        
+
         <addForeignKeyConstraint baseColumnNames="diagnoses_id"
                                  baseTableName="diagnosis_disease"
                                  constraintName="fk_diagnosis_disease_diagnoses_id"
@@ -52,6 +52,17 @@
                                  constraintName="fk_diagnosis_disease_diseases_id"
                                  referencedColumnNames="id"
                                  referencedTableName="disease"/>
-        
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/diagnosis_diseases.csv"
+                  separator=";"
+                  tableName="diagnosis_disease">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/diagnosis_drugs.csv"
+                  separator=";"
+                  tableName="diagnosis_drugs">
+        </loadData>
+
     </changeSet>
 </databaseChangeLog>

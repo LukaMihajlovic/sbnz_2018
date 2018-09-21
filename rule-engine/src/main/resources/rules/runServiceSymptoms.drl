@@ -84,7 +84,6 @@ query "Provera alergije"(Long $anamnesisId)
         ) from $enteredDrugs,
         init ( List<Drug> drugs = new ArrayList<Drug>(); ),
         action ( drugs.add($d); ),
-        reverse ( drugs.remove($d); ),
         result ( drugs )
     )
     $ingredientsAll: List() from accumulate (
@@ -93,7 +92,6 @@ query "Provera alergije"(Long $anamnesisId)
         ) from $ingredientAllergies,
         init ( List<Ingredient> ingredients = new ArrayList<Ingredient>(); ),
         action ( ingredients.add($i); ),
-        reverse ( ingredients.remove($i); ),
         result ( ingredients )
     )
 end

@@ -1,0 +1,119 @@
+package rules;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.HashSet;
+import java.lang.Long;
+import java.lang.String;
+import java.time.LocalDate;
+
+import rs.ac.uns.ftn.sbnz.domain.Anamnesis;
+import rs.ac.uns.ftn.sbnz.domain.Patient;
+import rs.ac.uns.ftn.sbnz.domain.Diagnosis;
+import rs.ac.uns.ftn.sbnz.domain.Disease;
+import rs.ac.uns.ftn.sbnz.domain.Drug
+import rs.ac.uns.ftn.sbnz.domain.enumeration.DrugType;
+
+// ================== C H R O N I C  R E P O R T ==================
+
+query "Svi pacijenti"
+    $p: Patient()
+end
+
+
+query "Hronicni izvestaj"
+
+    $p : Patient($patientId: id, $ds: anamnesis.diagnoses)
+    $result: List( size > 0) from accumulate (
+        $d: Diagnosis(
+            date.isAfter(LocalDate.now().minusYears(2))
+        ) from $ds,
+        init ( Set<String> res = new HashSet<String>(); ),
+        action (
+            for (Disease disease: $d.diseases) {
+                if (!disease.name.equals("Groznica") && !disease.name.equals("Prehlada")) {
+                    if (fiveTimes($p,disease.name))
+                        res.add(disease.name);
+                }
+            }
+        ),
+        result ( res )
+    )
+
+end
+
+function boolean fiveTimes(Patient patient, String dName) {
+    int num = 0;
+    for (Diagnosis diagnosis: patient.getAnamnesis().getDiagnoses()) {
+        for (Disease disease: diagnosis.getDiseases()) {
+            if (disease.getName().equals(dName))
+                num++;
+                if (num > 5){
+                    return true;
+                }
+        }
+
+    }
+    return false;
+}
+
+query "Zavisnici"
+    $p : Patient($patientId: id, $ds: anamnesis.diagnoses)
+    $last6Analgetic: List(size > 5 ) from accumulate (
+        $d: Diagnosis(
+            date.isAfter(LocalDate.now().minusMonths(6)) &&  eval(analgetic($d))
+        ) from $ds,
+        init ( List<Diagnosis> diagnoses = new ArrayList<Diagnosis>(); ),
+        action ( diagnoses.add($d); System.out.println("ppppp" + $d.id); ),
+        result ( diagnoses )
+    )
+
+    $doctors:  Set( size > 2) from accumulate (
+        $d: Diagnosis( )  from $last6Analgetic,
+        init ( HashSet<Long> doctor = new HashSet<Long>(); ),
+        action (
+            System.out.println($last6Analgetic.size());
+            System.out.println("wwww" + $d.doctor.id);
+            doctor.add($d.doctor.id);
+        ),
+        result ( doctor )
+    )
+end
+
+function boolean analgetic(Diagnosis diagnosis) {
+    for (Drug drug: diagnosis.getDrugs()) {
+        if (drug.getType().equals(DrugType.ANALGETIC))
+            return true;
+    }
+    return false;
+}
+
+query "Imunitet"
+    $p : Patient($patientId: id, $ds: anamnesis.diagnoses)
+    $last12andAntibiotic: List( size > 10 ) from accumulate (
+        $d: Diagnosis(date.isAfter(LocalDate.now().minusMonths(12)) && eval(onlyAntibiotic($d))
+        ) from $ds,
+        init ( List<Diagnosis> diagnoses = new ArrayList<Diagnosis>(); ),
+        action ( diagnoses.add($d); ),
+        result ( diagnoses )
+    )
+    $dises: Set( size > 1 ) from accumulate (
+        $d: Diagnosis() from $last12andAntibiotic,
+        init ( Set<Disease> diseases = new HashSet<Disease>(); ),
+        action (
+            diseases.addAll($d.diseases);
+        ),
+        result ( diseases )
+    )
+
+end
+
+function boolean onlyAntibiotic(Diagnosis diagnosis) {
+    for (Drug drug: diagnosis.getDrugs()) {
+        if (!drug.getType().equals(DrugType.ANTIBIOTIC))
+            return false;
+    }
+    return true;
+}

@@ -10,6 +10,7 @@ import { SbnzSymptomModule } from './symptom/symptom.module';
 import {SbnzDiagnosingModule} from "./diagnosing/diagnosing.module";
 import { SbnzUiawqModule } from './uiawq/uiawq.module';
 import { SbnzDiseaseModule } from './disease/disease.module';
+import {SbnzReportsModule} from "./reports/reports.module";
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -22,6 +23,7 @@ import { SbnzDiseaseModule } from './disease/disease.module';
         SbnzDrugModule,
         SbnzSymptomModule,
         SbnzDiagnosingModule,
+        SbnzReportsModule,
         SbnzUiawqModule,
         SbnzDiseaseModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */

@@ -27,7 +27,7 @@ public class Diagnosis implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(name = "jhi_date")
     private LocalDate date;
@@ -38,7 +38,7 @@ public class Diagnosis implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("diagnoses")
     @JsonIgnore
-    private Doctor doctor;
+    public Doctor doctor;
 
     @ManyToOne
     @JsonIgnoreProperties("diagnoses")
@@ -66,7 +66,7 @@ public class Diagnosis implements Serializable {
                joinColumns = @JoinColumn(name="diagnoses_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="diseases_id", referencedColumnName="id"))
     @LazyCollection(LazyCollectionOption.FALSE)
-    private Set<Disease> diseases = new HashSet<>();
+    public Set<Disease> diseases = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

@@ -1,0 +1,44 @@
+
+
+<div class="container" >
+    <div id="mar1" class="btn-group">
+        <button class="btn btn-primary" (click)="chronic()">
+            <span>Hronicna oboljenja</span>
+        </button>
+        <button class="btn btn-success" (click)="addict()">
+            <span>Zavisnici</span>
+        </button>
+        <button class="btn btn-primary" (click)="imun()">
+            <span>Oslabljeni imunitet</span>
+        </button>
+    </div>
+    <div id="mar" class="row">
+        <div>
+            <h1 *ngIf="pok">Spisak pacijenata sa mogućim hroničnim oboljenjima:</h1>
+            <h1 *ngIf="pok1">Spisak mogućih zavisnika:</h1>
+            <h1 *ngIf="pok2">Spisak pacijenata sa oslabljenim imunitetom:</h1>
+            <br/>
+            <div class="row" *ngIf="this.patients !== null">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>JMBG</th>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let p of patients; let i = index">
+                        <td>{{p.anamnesis.jmbg}}</td>
+                        <td>{{ p.firstName }}</td>
+                        <td>{{ p.lastName }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row" *ngIf="this.patients !== null">
+                <p class="result">Ukupno pacijenata: {{patients.length}}</p>
+            </div>
+        </div>
+    </div>
+</div>

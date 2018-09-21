@@ -1,7 +1,9 @@
 id;first_name;last_name;anamnesis_id
 
-1;Marko;Markovic;11
-2;Pera;Peric;22
-3;Novak;Novakovic;33
-4;Petko;Petkovic;44
-5;Nikola;Nikolic;55
+1;Marko;Markovic;1
+2;Pera;Peric;2
+3;Novak;Novakovic;3
+4;Petko;Petkovic;4
+5;Nikola;Nikolic;5
+6;Marina;Marinovic;6
+
