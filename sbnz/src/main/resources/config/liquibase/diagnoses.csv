@@ -6,7 +6,9 @@ id;jhi_date;jhi_recovery;doctor_id;anamnesis_id
 4;2018-09-10;true;2;1
 5;2018-09-11;true;2;1
 6;2018-09-15;true;2;1
+70;2017-09-15;true;2;1
 
+71;2018-09-21;true;1;2
 7;2018-03-03;true;1;2
 8;2018-02-02;true;1;2
 9;2018-01-01;true;1;2

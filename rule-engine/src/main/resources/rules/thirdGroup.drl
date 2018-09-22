@@ -1,0 +1,156 @@
+package rules;
+
+import java.lang.Integer;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId
+
+import rs.ac.uns.ftn.sbnz.domain.Anamnesis;
+import rs.ac.uns.ftn.sbnz.domain.Symptom;
+import rs.ac.uns.ftn.sbnz.domain.Diagnosis;
+import rs.ac.uns.ftn.sbnz.service.RunService;
+import rs.ac.uns.ftn.sbnz.domain.Disease
+import rs.ac.uns.ftn.sbnz.domain.Drug
+import rs.ac.uns.ftn.sbnz.domain.enumeration.DrugType;
+
+global RunService runService;
+
+rule "Hronicna bubrezna bolest"
+agenda-group "AnalizeDiseases"
+activation-group "ThirdGroup"
+salience ((int)((($normal.intValue() + $specific.intValue()) / 7.0) * 100))
+    when
+        $a: Anamnesis ( $symptoms: currentDiagnosis.symptoms,
+                        $spec: Arrays.asList("hiper","dija")
+        )
+
+        $specific: Number ( intValue() >= 1 ) from accumulate (
+                    String(
+                    (equals("hiper") && hiperten($a)) ||
+                    (equals("dija") && diabet($a))
+                    ) from $spec,
+                    init ( int count = 0; ),
+                    action ( count += 1; System.out.println("aaa"); System.out.println(count); ),
+                    result ( count )
+        )
+        $normal: Number ( intValue() >= 2 ) from accumulate (
+            Symptom(
+                name.equals("Umor") || name.equals("Nocturia") || name.equals("Otoci nogu i zglobova") || name.equals("Gusenje") ||
+                name.equals("Bol u grudima")
+            ) from $symptoms,
+            init ( int matched = 0; ),
+            action ( matched += 1; System.out.println(matched); ),
+            result ( matched )
+        )
+
+
+    then
+        System.out.println( "AKTIVIRALA SE HRONICNA BUBREZNA BOLEST");
+        System.out.println( "AKTIVIRALA SE HRONICNA BUBREZNA BOLEST");
+        System.out.println( "AKTIVIRALA SE HRONICNA BUBREZNA BOLEST");
+	    runService.diagnoseDisease("Hronicna bubrezna bolest", (int)((($normal.intValue() + $specific.intValue()) / 7.0) * 100),$a);
+end
+
+rule "Akutna bubrezna povreda"
+agenda-group "AnalizeDiseases"
+activation-group "ThirdGroup"
+salience ((int)((($normal.intValue() + $specific.intValue()) / 7.0) * 100))
+    when
+        $a: Anamnesis ( $symptoms: currentDiagnosis.symptoms,
+                        $spec: Arrays.asList("last14","last21","rec")
+        )
+
+        $specific: Number ( intValue() >= 1 ) from accumulate (
+            String(
+            (equals("last14") && last14($a)) || (equals("last21") && last21($a)) || (equals("rec") && recovery($a))
+            ) from $spec,
+            init ( int count = 0; ),
+            action ( count += 1; System.out.println("bbb"); System.out.println(count); ),
+            result ( count )
+        )
+        $normal: Number ( intValue() >= 2 ) from accumulate (
+            Symptom(
+                name.equals("Umor") || name.equals("Otoci nogu i zglobova") || name.equals("Gusenje") ||
+                name.equals("Dijareja")
+            ) from $symptoms,
+            init ( int matched = 0; ),
+            action ( matched += 1; System.out.println(matched); ),
+            result ( matched )
+        )
+    then
+        System.out.println( "AKTIVIRALA SE AKUTNA BUBREZNA BOLEST");
+        System.out.println( "AKTIVIRALA SE AKUTNA BUBREZNA BOLEST");
+        System.out.println( "AKTIVIRALA SE AKUTNA BUBREZNA BOLEST");
+	    runService.diagnoseDisease("Akutna bubrezna povreda", (int)((($normal.intValue() + $specific.intValue()) / 7.0) * 100),$a);
+end
+
+
+function boolean hiperten(Anamnesis anamnesis) {
+    for (Diagnosis diagnosis: (Set<Diagnosis>)anamnesis.getDiagnoses()) {
+        if (diagnosis.getDate().isBefore(LocalDate.now().minusMonths(6))) {
+            for (Disease d : diagnosis.getDiseases()){
+                if (d.getName().equals("Hipertenzija")){
+                    System.out.println("TRUE");
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+function boolean diabet(Anamnesis anamnesis) {
+    for (Diagnosis diagnosis: (Set<Diagnosis>)anamnesis.getDiagnoses()) {
+        for (Disease d : diagnosis.getDiseases()){
+            if (d.getName().equals("Dijabetes")){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function boolean recovery(Anamnesis anamnesis){
+    if (anamnesis.getCurrentDiagnosis().isRecovery() != null) {
+        return anamnesis.getCurrentDiagnosis().isRecovery();
+    }
+    return false;
+}
+
+function boolean last14(Anamnesis anamnesis){
+
+    for (Diagnosis diagnosis: (Set<Diagnosis>)anamnesis.getDiagnoses()) {
+        if (diagnosis.getDate().isAfter(LocalDate.now().minusDays(14))) {
+            for (Disease d : diagnosis.getDiseases()){
+                for (Symptom s : d.getSymptoms()) {
+                    if (s.getName().equals("Visoka telesna temperatura")){
+                        return true;
+                    }
+                }
+            }
+        }
+
+    }
+    return false;
+
+}
+
+function boolean last21(Anamnesis anamnesis){
+
+    for (Diagnosis diagnosis: (Set<Diagnosis>)anamnesis.getDiagnoses()) {
+        if (diagnosis.getDate().isAfter(LocalDate.now().minusDays(21))) {
+            for (Drug d : diagnosis.getDrugs()){
+                if (d.getType().equals(DrugType.ANTIBIOTIC)){
+                    return true;
+                }
+            }
+        }
+
+    }
+    return false;
+
+}
+
+

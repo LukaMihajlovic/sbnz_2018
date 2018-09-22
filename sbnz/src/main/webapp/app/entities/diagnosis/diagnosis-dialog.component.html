@@ -39,25 +39,25 @@
             <label class="form-control-label" for="field_anamnesis">Anamnesis</label>
             <select class="form-control" id="field_anamnesis" name="anamnesis" [(ngModel)]="diagnosis.anamnesis" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="anamnesisOption.id === diagnosis.anamnesis?.id ? diagnosis.anamnesis : anamnesisOption" *ngFor="let anamnesisOption of anamneses; trackBy: trackAnamnesisById">{{anamnesisOption.id}}</option>
+                <option [ngValue]="anamnesisOption.id === diagnosis.anamnesis?.id ? diagnosis.anamnesis : anamnesisOption" *ngFor="let anamnesisOption of anamneses; trackBy: trackAnamnesisById">{{anamnesisOption.jmbg}}</option>
             </select>
         </div>
         <div class="form-group">
             <label for="field_drugs">Drugs</label>
             <select class="form-control" id="field_drugs" multiple name="drugs" [(ngModel)]="diagnosis.drugs">
-                <option [ngValue]="getSelected(diagnosis.drugs, drugOption)" *ngFor="let drugOption of drugs; trackBy: trackDrugById">{{drugOption.id}}</option>
+                <option [ngValue]="getSelected(diagnosis.drugs, drugOption)" *ngFor="let drugOption of drugs; trackBy: trackDrugById">{{drugOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
             <label for="field_symptoms">Symptoms</label>
             <select class="form-control" id="field_symptoms" multiple name="symptoms" [(ngModel)]="diagnosis.symptoms">
-                <option [ngValue]="getSelected(diagnosis.symptoms, symptomOption)" *ngFor="let symptomOption of symptoms; trackBy: trackSymptomById">{{symptomOption.id}}</option>
+                <option [ngValue]="getSelected(diagnosis.symptoms, symptomOption)" *ngFor="let symptomOption of symptoms; trackBy: trackSymptomById">{{symptomOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
             <label for="field_disease">Disease</label>
             <select class="form-control" id="field_disease" multiple name="disease" [(ngModel)]="diagnosis.diseases">
-                <option [ngValue]="getSelected(diagnosis.diseases, diseaseOption)" *ngFor="let diseaseOption of diseases; trackBy: trackDiseaseById">{{diseaseOption.id}}</option>
+                <option [ngValue]="getSelected(diagnosis.diseases, diseaseOption)" *ngFor="let diseaseOption of diseases; trackBy: trackDiseaseById">{{diseaseOption.name}}</option>
             </select>
         </div>
     </div>

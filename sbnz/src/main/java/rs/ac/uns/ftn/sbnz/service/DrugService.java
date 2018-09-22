@@ -92,10 +92,10 @@ public class DrugService {
         kieSession.insert(anamnesis);
         kieSession.insert(dc);
         QueryResults results = kieSession.getQueryResults("Provera alergije", anamnesis.getId());
-        List<Drug> medication = new ArrayList<>();
+        List<Drug> drugs = new ArrayList<>();
         List<Ingredient> ingredients = new ArrayList<>();
         for (QueryResultsRow r : results) {
-            medication = (ArrayList<Drug>) r.get("$drugsAll");
+            drugs = (ArrayList<Drug>) r.get("$drugsAll");
             ingredients = (ArrayList<Ingredient>) r.get("$ingredientsAll");
         }
 
@@ -103,7 +103,7 @@ public class DrugService {
         kieSession.delete(kieSession.getFactHandle(dc));
 
         AllergiesToClient pr = new AllergiesToClient();
-        pr.setDugs(medication);
+        pr.setDugs(drugs);
         pr.setIngredients(ingredients);
 
         return pr;

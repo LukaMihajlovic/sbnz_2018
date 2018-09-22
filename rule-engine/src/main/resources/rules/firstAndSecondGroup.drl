@@ -95,7 +95,7 @@ salience( $percent )
              || name.equals("Oticanje oko ociju") || name.equals("Kasalj") ||
             (name.equals("Visoka telesna temperatura") && low >= 38)
             ) from $symptoms,
-            init ( int num = 0; ),
+            init ( int num = 1; ),
             action ( num += 1; ),
             result (((double)num/7)*100)
         )
@@ -169,7 +169,10 @@ function int hyperCheck(Anamnesis anamnesis) {
         }
         if (diagnosis.getDate().isAfter(LocalDate.now().minusMonths(6)) && cond1) {
             num += 1;
+            System.out.println("VISOK");
+            System.out.println(num);
         }
     }
+    System.out.println(num);
     return num;
 }

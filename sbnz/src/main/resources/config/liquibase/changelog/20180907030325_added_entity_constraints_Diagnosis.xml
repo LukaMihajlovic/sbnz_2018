@@ -63,6 +63,13 @@
                   separator=";"
                   tableName="diagnosis_drugs">
         </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/diagnosis_symptoms.csv"
+                  separator=";"
+                  tableName="diagnosis_symptoms">
+        </loadData>
+
+
 
     </changeSet>
 </databaseChangeLog>
