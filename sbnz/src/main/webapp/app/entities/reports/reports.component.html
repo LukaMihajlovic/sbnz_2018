@@ -11,6 +11,34 @@
         <button class="btn btn-primary" (click)="imun()">
             <span>Oslabljeni imunitet</span>
         </button>
+        <button class="btn btn-success" (click)="monitor()">
+            <span>Monitoring</span>
+        </button>
+    </div>
+    <div *ngIf="pok3" id="mar2" class="row">
+        <div>
+            <h1 *ngIf="pok">Monitoring:</h1>
+            <br/>
+            <div class="row">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID Pacijenta</th>
+                        <th>Upozorenje</th>
+                        <th>Poruka</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let m of monitoring; let i = index">
+                        <td>{{m.patientId}}</td>
+                        <td>{{ m.event }}</td>
+                        <td>{{ m.message }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
     <div id="mar" class="row">
         <div>
@@ -18,7 +46,7 @@
             <h1 *ngIf="pok1">Spisak mogućih zavisnika:</h1>
             <h1 *ngIf="pok2">Spisak pacijenata sa oslabljenim imunitetom:</h1>
             <br/>
-            <div class="row" *ngIf="this.patients !== null">
+            <div class="row" *ngIf="this.patients !== null && (this.pok || this.pok1 || this.pok2) ">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -36,7 +64,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row" *ngIf="this.patients !== null">
+            <div class="row" *ngIf="this.patients !== null && (this.pok || this.pok1 || this.pok2) ">
                 <p class="result">Ukupno pacijenata: {{patients.length}}</p>
             </div>
         </div>

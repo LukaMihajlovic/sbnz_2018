@@ -15,7 +15,12 @@ import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.sbnz.domain.Anamnesis;
 import rs.ac.uns.ftn.sbnz.domain.Diagnosis;
 import rs.ac.uns.ftn.sbnz.domain.Disease;
+import rs.ac.uns.ftn.sbnz.domain.icu.HeartbeatEvent;
+import rs.ac.uns.ftn.sbnz.domain.icu.PatientMonitoring;
 import rs.ac.uns.ftn.sbnz.security.SecurityUtils;
+import rs.ac.uns.ftn.sbnz.web.websocket.dto.RealtimeEvent;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -67,24 +72,75 @@ public class RunService implements ApplicationEventPublisherAware {
         anamnesisService.save(anamnesis);
     }
 
-    public void clearSession() {
+    public void socketSend(String message, Date date, int id, String event) {
+        log.info("Message from realtime test: " + message);
+        publisher.publishEvent(new RealtimeEvent(this, event, date, message, id));
+    }
+
+    /*public void clearSession() {
         Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
         if (!userLogin.isPresent())
             return;
         KieSession kieSession = kieSessions.get(userLogin.get());
-        QueryResults queryResults = kieSession.getQueryResults("Get all Anamnesis facts");
+        QueryResults queryResults = kieSession.getQueryResults("");
         for (QueryResultsRow queryResult: queryResults) {
             Anamnesis a = (Anamnesis)queryResult.get("$anamnesis");
             System.out.println(a);
             kieSession.delete(kieSession.getFactHandle(a));
         }
-    }
+    }*/
 
 
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
+    }
+
+    public void realtimeSimulation() {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kContainer = ks.getKieClasspathContainer();
+        KieSession kieSession = kContainer.newKieSession("realtime");
+        kieSession.setGlobal("runService", this);
+        PatientMonitoring patient = new PatientMonitoring();
+        kieSession.insert(patient);
+
+        Thread t = new Thread(() -> {
+            while (true) {
+                for (int i = 0; i < 30; i++) {
+                    HeartbeatEvent event = new HeartbeatEvent(patient.getId());
+                    kieSession.insert(event);
+
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        //do nothing
+                    }
+                }
+
+                try {
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    //do nothing
+                }
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            //do nothing
+        }
+        kieSession.fireUntilHalt();
     }
 
 }

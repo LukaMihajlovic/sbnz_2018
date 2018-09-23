@@ -11,6 +11,8 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import rs.ac.uns.ftn.sbnz.web.websocket.dto.RealtimeDTO;
+import rs.ac.uns.ftn.sbnz.web.websocket.dto.RealtimeEvent;
 
 import java.security.Principal;
 import java.time.Instant;
@@ -18,7 +20,7 @@ import java.time.Instant;
 import static rs.ac.uns.ftn.sbnz.config.WebsocketConfiguration.IP_ADDRESS;
 
 @Controller
-public class ActivityService implements ApplicationListener<SessionDisconnectEvent> {
+public class ActivityService implements ApplicationListener<RealtimeEvent> {
 
     private static final Logger log = LoggerFactory.getLogger(ActivityService.class);
 
@@ -39,11 +41,10 @@ public class ActivityService implements ApplicationListener<SessionDisconnectEve
         return activityDTO;
     }
 
+
     @Override
-    public void onApplicationEvent(SessionDisconnectEvent event) {
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setSessionId(event.getSessionId());
-        activityDTO.setPage("logout");
-        messagingTemplate.convertAndSend("/topic/tracker", activityDTO);
+    public void onApplicationEvent(RealtimeEvent rt) {
+        messagingTemplate.convertAndSend("/topic/tracker",
+            new RealtimeDTO(rt.getEvent(), rt.getDate(), rt.getMessage(), rt.getPatientId()));
     }
 }

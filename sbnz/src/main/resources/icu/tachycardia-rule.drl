@@ -30,5 +30,5 @@ rule "Ubrzan rad srca"
         System.out.println("Broj otkucaja u poslednjih 10s: " + $total);
         System.out.println("----------------------------------------------------");
         insert(new FastHeartbeatEvent($pm.id));
-        //runService.sendMessage("Total heartbeats in 10s: " + $total, new Date(), $p.id, "Rapid heart rate - Tachycardia");
+        //runService.socketSend("Broj otkucaja u poslednjih 10s: " + $total, new Date(), $pm.id, "Ubrzan ritam srca");
 end

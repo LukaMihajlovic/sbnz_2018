@@ -3,6 +3,8 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { Account, LoginModalService, Principal } from '../shared';
+import {AnamnesisService} from "../entities/anamnesis/anamnesis.service";
+import {JhiTrackerService} from "../shared/tracker/tracker.service";
 
 @Component({
     selector: 'jhi-home',
@@ -18,12 +20,15 @@ export class HomeComponent implements OnInit {
 
     constructor(
         private principal: Principal,
+        private anamnesisService: AnamnesisService,
         private loginModalService: LoginModalService,
+        private trackerService: JhiTrackerService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
+
         this.principal.identity().then((account) => {
             this.account = account;
         });

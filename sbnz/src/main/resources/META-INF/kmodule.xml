@@ -4,6 +4,6 @@
 
     <kbase name="icuKbase" eventProcessingMode="stream" packages="icu">
         <ksession name="icu" clockType="pseudo"/>
-        <ksession name="icu-realtime-session" clockType="realtime"/>
+        <ksession name="realtime" clockType="realtime"/>
     </kbase>
 </kmodule>

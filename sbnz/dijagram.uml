@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>rs.ac.uns.ftn.sbnz.domain.Anamnesis</OriginalElement>
+  <nodes>
+    <node x="67.81249999999997" y="456.0">rs.ac.uns.ftn.sbnz.domain.Anamnesis</node>
+    <node x="78.31249999999997" y="535.0">rs.ac.uns.ftn.sbnz.domain.Patient</node>
+    <node x="23.999999999999986" y="0.0">rs.ac.uns.ftn.sbnz.domain.User</node>
+    <node x="0.0" y="228.0">rs.ac.uns.ftn.sbnz.domain.Ingredient</node>
+    <node x="121.49999999999999" y="109.0">rs.ac.uns.ftn.sbnz.domain.Symptom</node>
+    <node x="64.00764860139859" y="327.0">rs.ac.uns.ftn.sbnz.domain.Drug</node>
+    <node x="161.0076486013986" y="0.0">rs.ac.uns.ftn.sbnz.domain.Disease</node>
+    <node x="17.499999999999986" y="109.0">rs.ac.uns.ftn.sbnz.domain.Doctor</node>
+    <node x="121.99999999999999" y="228.0">rs.ac.uns.ftn.sbnz.domain.Diagnosis</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="215.0" y="153.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

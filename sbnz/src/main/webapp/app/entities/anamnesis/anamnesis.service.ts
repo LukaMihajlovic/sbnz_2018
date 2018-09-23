@@ -56,6 +56,10 @@ export class AnamnesisService {
         return res.clone({body});
     }
 
+    realtime(): Observable<HttpResponse<any>> {
+        return this.http.get<any>(`${this.resourceUrl}/realtime`, { observe: 'response' });
+    }
+
     /**
      * Convert a returned JSON object to Anamnesis.
      */

@@ -1,8 +1,10 @@
 package rs.ac.uns.ftn.sbnz.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.beans.factory.annotation.Autowired;
 import rs.ac.uns.ftn.sbnz.domain.Anamnesis;
 import rs.ac.uns.ftn.sbnz.service.AnamnesisService;
+import rs.ac.uns.ftn.sbnz.service.RunService;
 import rs.ac.uns.ftn.sbnz.web.rest.errors.BadRequestAlertException;
 import rs.ac.uns.ftn.sbnz.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -29,6 +31,9 @@ public class AnamnesisResource {
     private static final String ENTITY_NAME = "anamnesis";
 
     private final AnamnesisService anamnesisService;
+
+    @Autowired
+    private RunService runService;
 
     public AnamnesisResource(AnamnesisService anamnesisService) {
         this.anamnesisService = anamnesisService;
@@ -115,4 +120,10 @@ public class AnamnesisResource {
         anamnesisService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    @GetMapping("/anamneses/realtime")
+    @Timed
+    public void realtime() {
+        runService.realtimeSimulation();
+    }
+
 }
